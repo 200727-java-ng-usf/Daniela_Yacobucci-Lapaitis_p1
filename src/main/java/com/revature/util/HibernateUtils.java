@@ -2,12 +2,8 @@ package com.revature.util;
 
 import com.revature.models.*;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -33,7 +29,8 @@ public class HibernateUtils {
                     .setProperty("hibernate.connection.url", props.getProperty("url"))
                     .setProperty("hibernate.connection.username", props.getProperty("username"))
                     .setProperty("hibernate.connection.password", props.getProperty("password"))
-                    .addAnnotatedClass(ErsReimbursementStatuses.class);
+                    .addAnnotatedClass(ErsReimbursementStatus.class)
+                    .addAnnotatedClass(ErsReimbursementType.class);
 
 
             config.setImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE);

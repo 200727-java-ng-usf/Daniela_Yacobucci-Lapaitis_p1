@@ -1,25 +1,25 @@
 package com.revature.repo;
 
-import com.revature.models.ErsReimbursementStatus;
+import com.revature.models.ErsReimbursementType;
 import com.revature.util.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-public class ErsReimbursementStatusesRepository {
+public class ErsReimbursementTypesRepository {
 
-    public static void printErsReimbursementStatuses(){
+    public static void printErsReimbursementTypes(){
 
         Session session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
         Transaction tx = null;
 
         try{
             tx = session.beginTransaction();
-            List<ErsReimbursementStatus> ersReimbursementStatuses = session.createQuery("FROM ErsReimbursementStatus ", ErsReimbursementStatus.class).list();
+            List<ErsReimbursementType> ersReimbursementTypes = session.createQuery("FROM ErsReimbursementType ", ErsReimbursementType.class).list();
 
-            for (ErsReimbursementStatus ersrs : ersReimbursementStatuses) {
-                System.out.println(ersrs.toString());
+            for (ErsReimbursementType ersrt : ersReimbursementTypes) {
+                System.out.println(ersrt.toString());
             }
 
             tx.commit();
@@ -30,5 +30,4 @@ public class ErsReimbursementStatusesRepository {
             session.close();
         }
     }
-
 }
