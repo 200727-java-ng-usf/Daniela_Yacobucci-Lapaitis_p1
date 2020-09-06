@@ -30,7 +30,9 @@ public class HibernateUtils {
                     .setProperty("hibernate.connection.username", props.getProperty("username"))
                     .setProperty("hibernate.connection.password", props.getProperty("password"))
                     .addAnnotatedClass(ErsReimbursementStatus.class)
-                    .addAnnotatedClass(ErsReimbursementType.class);
+                    .addAnnotatedClass(ErsReimbursementType.class)
+                    .addAnnotatedClass(ErsUserRole.class)
+                    .addAnnotatedClass(ErsUser.class);
 
 
             config.setImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE);
