@@ -22,7 +22,9 @@ public class HibernateUtils {
             return sessionFactory;
 
         try {
-            props.load(new FileReader("./src/main/resources/application.properties"));
+            // props.load(new FileReader("./src/main/resources/application.properties"));
+
+            props.load(HibernateUtils.class.getClassLoader().getResourceAsStream("application.properties"));
             Configuration config = new Configuration()
                     .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
                     .setProperty("hibernate.connection.driver_class", "org.postgresql.Driver")

@@ -125,8 +125,9 @@ public class ErsUserRepository {
 
     public Optional<ErsUser> findUserByCredentials(String username, String password){
 
-        Optional<ErsUser> _user = Optional.empty();
         session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        Optional<ErsUser> _user = Optional.empty();
 
         try{
 
@@ -145,6 +146,7 @@ public class ErsUserRepository {
             _user = (Optional<ErsUser>) query.getResultList().stream().findFirst();
 
             tx.commit();
+
         } catch (Exception e) {
             if (tx!= null) tx.rollback();
             e.printStackTrace();

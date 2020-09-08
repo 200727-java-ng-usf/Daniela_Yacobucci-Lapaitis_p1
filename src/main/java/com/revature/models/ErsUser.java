@@ -26,7 +26,7 @@ public class ErsUser {
     @Column(name="email")
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="user_role_id")
     private ErsUserRole ersUserRole;
 

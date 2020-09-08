@@ -12,13 +12,17 @@ public class AppDriver {
 
         ErsUserService userService = new ErsUserService();
 
-        ErsReimbursementStatusRepository.printErsReimbursementStatuses();
-        ErsReimbursementTypeRepository.printErsReimbursementTypes();
-        ErsUserRoleRepository.printErsUserRoles();
-        ErsUserRepository.printErsUsers();
-        ErsUserRepository.printErsUsersCriteria();
-        ErsUserRepository.deleteUserByUsername("ppalotes");
+        ErsUserRepository userRepo = new ErsUserRepository();
 
-        userService.authenticate("yoo","aa");
+        System.out.println(userRepo.findUserByCredentials("meghvu","clowntime").get());
+        // System.out.println(userService.authenticate("meghvu","clowntime").get());
+//
+//        ErsReimbursementTypeRepository.printErsReimbursementTypes();
+//        ErsUserRoleRepository.printErsUserRoles();
+//        ErsUserRepository.printErsUsers();
+//        ErsUserRepository.printErsUsersCriteria();
+//        ErsUserRepository.deleteUserByUsername("ppalotes");
+//
+//        userService.authenticate("yoo","aa");
     }
 }
