@@ -152,6 +152,83 @@ public class ErsUserRepository {
             session.close();
         }
 
+        //TODO remove breadcrumb
+        System.out.println("User and credentials: ");
+        if(_user.isPresent()){
+            System.out.println(_user);
+        }
+        else {
+            System.out.println("SOT PRESENT");
+        }
+
+        return (_user);
+    }
+
+    public Optional<ErsUser> findUserByUsername(String username){
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        Optional<ErsUser> _user = Optional.empty();
+
+        try{
+
+            tx = session.beginTransaction();
+
+            cb = session.getCriteriaBuilder();
+
+            CriteriaQuery<ErsUser> cq = cb.createQuery(ErsUser.class);
+            Root<ErsUser> root = cq.from(ErsUser.class);
+            cq.select(root);
+
+            cq.where(cb.equal(root.get("username"), username));
+
+            Query query = session.createQuery(cq);
+
+            _user = (Optional<ErsUser>) query.getResultList().stream().findFirst();
+
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx!= null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return (_user);
+    }
+
+    public Optional<ErsUser> findUserByEmail(String email){
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        Optional<ErsUser> _user = Optional.empty();
+
+        try{
+
+            tx = session.beginTransaction();
+
+            cb = session.getCriteriaBuilder();
+
+            CriteriaQuery<ErsUser> cq = cb.createQuery(ErsUser.class);
+            Root<ErsUser> root = cq.from(ErsUser.class);
+            cq.select(root);
+
+            cq.where(cb.equal(root.get("email"), email));
+
+            Query query = session.createQuery(cq);
+
+            _user = (Optional<ErsUser>) query.getResultList().stream().findFirst();
+
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx!= null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
         return (_user);
     }
 }

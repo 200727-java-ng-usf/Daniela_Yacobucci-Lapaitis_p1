@@ -7,17 +7,15 @@ public class RequestViewHelper {
 
     public String process(HttpServletRequest req) {
 
-        System.out.println("hit the cases");
-        System.out.println(req.getRequestURI());
+        System.out.println("[Request View Helper] req.getRequestURI() " + req.getRequestURI());
 
         switch (req.getRequestURI()) {
-
 
 
             case "login.view":
             case "/login.view":
             case "/ers/login.view":
-                System.out.println("login screen case");
+
                 return "partials/login.html";
 
             case "/register.view":

@@ -58,6 +58,8 @@ function loadHome() {
 
     let xhr = new XMLHttpRequest();
 
+    console.log(localStorage.getItem('authUser'));
+
     xhr.open('GET', 'home.view');
     xhr.send();
 
@@ -125,6 +127,8 @@ function configureHomeView() {
 
     console.log('in configureHomeView()');
     let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+
     document.getElementById('loggedInUsername').innerText = authUser.username;
 
 }
