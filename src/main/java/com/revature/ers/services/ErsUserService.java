@@ -32,13 +32,18 @@ public class ErsUserService {
 
     public boolean isUsernameAvailable(String username) {
 
-        //TODO implement isUsernaveAvailable
+        if(ersUserRepo.findUserByUsername(username).isPresent()){
+            return false;
+        }
         return true;
     }
 
     public boolean isEmailAvailable(String email) {
 
-        //TODO implement isEmailAvailable
+        if(ersUserRepo.findUserByEmail(email).isPresent()){
+            return false;
+        }
+
         return true;
     }
 

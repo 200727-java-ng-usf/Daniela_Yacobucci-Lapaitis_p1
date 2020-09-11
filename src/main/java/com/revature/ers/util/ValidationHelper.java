@@ -15,11 +15,13 @@ public class ValidationHelper {
         ObjectMapper mapper = new ObjectMapper();
 
         switch (req.getRequestURI()) {
-            case "/revabooks/email.validate":
+            case "/ers/email.validate":
+            case "/email.validate":
                 String email = mapper.readValue(req.getInputStream(), String.class);
                 return ersUserService.isEmailAvailable(email);
 
-            case "/revabooks/username.validate":
+            case "/ers/username.validate":
+            case "/username.validate":
                 String username = mapper.readValue(req.getInputStream(), String.class);
                 return ersUserService.isUsernameAvailable(username);
 

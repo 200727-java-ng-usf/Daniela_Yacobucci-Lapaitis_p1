@@ -13,11 +13,15 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
+
+
 public class ErsUserRepository {
 
     static CriteriaBuilder cb;
     static Transaction tx = null;
     static Session session;
+
+    //sessionFactory
 
     public static void printErsUsers(){
 
@@ -229,6 +233,17 @@ public class ErsUserRepository {
             session.close();
         }
 
+
         return (_user);
     }
 }
+/*
+
+Session session = sessionFactory.getCurrentSession();
+
+try{
+
+//tx.commit(); <-- dont have to do it but its good practice
+}
+
+ */

@@ -23,6 +23,13 @@ public class HibernateUtils {
         try {
             // props.load(new FileReader("./src/main/resources/application.properties"));
 
+            /*
+            Configuration cfg = new...
+            cfg.addA...
+
+
+             */
+
             props.load(HibernateUtils.class.getClassLoader().getResourceAsStream("application.properties"));
             Configuration config = new Configuration()
                     .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
@@ -49,9 +56,14 @@ public class HibernateUtils {
             System.out.println(e.getMessage());
             e.printStackTrace();
             return null;
+
+            //throw new ExceptionInInitializerError to halt app
         }
 
         return null;
     }
+    // getSessionFactory to make the sessionfactory a singleton
+    // we dont rly need a hibernateConfic instance since all methods are static
+
 
 }
