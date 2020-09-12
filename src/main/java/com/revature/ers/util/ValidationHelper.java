@@ -32,6 +32,7 @@ public class ValidationHelper {
     }
 }
 
+//TODO put "ers" in a variable so it can be changed easily
 /*
 previously RequestHelper had similar goal
 
