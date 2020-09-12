@@ -23,5 +23,9 @@ public class AppDriver {
 //        ErsUserRepository.deleteUserByUsername("ppalotes");
 //
 //        userService.authenticate("yoo","aa");
+
+        //TODO check wether user can get to ... for example home... thru url
+        //TODO change black at top to fill
+        //TODO change colors of nav bar
     }
 }

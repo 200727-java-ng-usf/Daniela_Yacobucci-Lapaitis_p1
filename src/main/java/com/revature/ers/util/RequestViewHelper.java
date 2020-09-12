@@ -9,6 +9,8 @@ public class RequestViewHelper {
 
         System.out.println("[Request View Helper] req.getRequestURI() " + req.getRequestURI());
 
+        String principal = (String) req.getSession().getAttribute("principal");
+
         switch (req.getRequestURI()) {
 
             //nav bar views
@@ -17,9 +19,11 @@ public class RequestViewHelper {
 
                 return "partials/navbarpartials/loggedoutnavbar.html";
 
-            //nav bar views
             case "/loadLoggedInNavbar.view":
             case "/ers/loadLoggedInNavbar.view":
+                if (principal == null || principal.equals("")) {
+                    return "partials/navbarpartials/loggedoutnavbar.html";
+                }
 
                 return "partials/navbarpartials/loggedinnavbar.html";
 
@@ -36,12 +40,21 @@ public class RequestViewHelper {
             case "/home.view":
             case "/ers/home.view":
 
-                String principal = (String) req.getSession().getAttribute("principal");
                 if (principal == null || principal.equals("")) {
                     return "partials/login.html";
                 }
 
                 return "partials/home.html";
+
+            case "/profile.view":
+            case "/ers/profile.view":
+
+
+                if (principal == null || principal.equals("")) {
+                    return "partials/login.html";
+                }
+
+                return "partials/profile.html";
 
             default:
                 return null;

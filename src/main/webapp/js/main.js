@@ -22,6 +22,8 @@ function loadLoggedInFullHome(){
 
 //----------------------LOAD VIEWS-------------------------
 
+
+
 function loadLoggedOutNavbar(){
 
     console.log('in loadLoggedOutNavbar()');
@@ -97,9 +99,7 @@ function loadHome() {
 
     console.log('in loadHome()');
 
-    if (!localStorage.getItem('authUser')) {
-        console.log('No user logged in, navigating to login screen');
-        loadLogin();
+    if(!isUserLoggedIn()){
         return;
     }
 
@@ -123,9 +123,7 @@ function loadMyReimbursements() {
 
     console.log('in loadMyReimbursements()');
 
-    if (!localStorage.getItem('authUser')) {
-        console.log('No user logged in, navigating to login screen');
-        loadLogin();
+    if(!isUserLoggedIn()){
         return;
     }
 
@@ -143,6 +141,30 @@ function loadMyReimbursements() {
 
 }
 
+function loadProfile() {
+
+    console.log('in loadProfile()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    console.log(localStorage.getItem('authUser'));
+
+    xhr.open('GET',  'profile.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureProfileView();
+        }
+    }
+
+}
+
 //----------------CONFIGURE VIEWS--------------------
 
 function configureLoggedOutNavbar(){
@@ -152,7 +174,7 @@ function configureLoggedOutNavbar(){
 
 function configureLoggedInNavbar(){
     document.getElementById('toHome').addEventListener('click', loadHome);
-    //document.getElementById('toHome').addEventListener('click', loadHome); need a profile
+    document.getElementById('toProfile').addEventListener('click', loadProfile);
     document.getElementById('toLogout').addEventListener('click', logout);
 
 }
@@ -198,6 +220,12 @@ function configureMyReimbursementsView() {
 
     //let authUser = JSON.parse(localStorage.getItem('authUser'));
     //document.getElementById('loggedInUsername').innerText = authUser.username;
+
+}
+
+function configureProfileView() {
+
+    console.log('in configureProfileView()');
 
 }
 
@@ -402,4 +430,14 @@ function validateRegisterForm() {
         document.getElementById('register').removeAttribute('disabled');
         document.getElementById('reg-message').setAttribute('hidden', true);
     }
+}
+
+function isUserLoggedIn(){
+    if (!localStorage.getItem('authUser')) {
+        console.log('No user logged in, navigating to login screen');
+        loadLoggedOutFullHome()
+        return false;
+    }
+
+    return true;
 }
