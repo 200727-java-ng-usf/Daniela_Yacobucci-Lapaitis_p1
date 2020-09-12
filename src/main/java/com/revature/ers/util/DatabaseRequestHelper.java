@@ -15,39 +15,44 @@ import java.io.PrintWriter;
 public class DatabaseRequestHelper {
 
     ErsUserService ersUserService = new ErsUserService();
+    ObjectMapper mapper = new ObjectMapper();
+    String response;
 
-    public HttpServletResponse process(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public String process(HttpServletRequest req) throws IOException {
 
         System.out.println("[Request View Helper] req.getRequestURI() " + req.getRequestURI());
-
-        ObjectMapper mapper = new ObjectMapper();
-        PrintWriter respWriter = resp.getWriter();
+        Principal principal = Principal.JSONtoObj((String) req.getSession().getAttribute("principal"));
 
         switch(req.getRequestURI()){
             case "/userinfo.database":
             case "/ers/userinfo.database":
-                //get principal's info
-                //TODO not only get user info but also edit it
-                try {
-                    Principal principal = Principal.JSONtoObj((String) req.getSession().getAttribute("principal"));
-                    ErsUser principalUser = ersUserService.findUserByUsername(principal.getUsername());
-                    System.out.println("principalUser: " + principalUser);
+                response = httpGetUserInfo(principal);
 
-                    UserView loggedInUserView = new UserView(principalUser);
-                    System.out.println("UserView: " + loggedInUserView);
-                    String userJSON = mapper.writeValueAsString(loggedInUserView);
-                    respWriter.write(userJSON);
-                    //TODO change status
+        }
+
+        return (response);
+    }
 
 
-                }
-                catch(Exception e){//TODO catch this exception accordingly
+    private String httpGetUserInfo(Principal principal){
 
-                }
+        String userJSON = "";
+        try {
+
+
+            ErsUser principalUser = ersUserService.findUserByUsername(principal.getUsername());
+            UserView loggedInUserView = new UserView(principalUser);
+            System.out.println("UserView: " + loggedInUserView);
+            userJSON = mapper.writeValueAsString(loggedInUserView);
+            //TODO check of 200 status is appropriate
 
 
         }
-        return resp;
+        catch(Exception e){//TODO catch this exception accordingly
+
+        }
+
+        return userJSON;
 
     }
 

@@ -34,7 +34,8 @@ public class DatabaseValuesServlet extends HttpServlet {
 
         System.out.println("In the following servlet " + this.getClass());
         System.out.println("This is the request URI: " + req.getRequestURI());
-        resp = new DatabaseRequestHelper().process(req,resp);
+        respWriter.write(new DatabaseRequestHelper().process(req));
+        resp.setStatus(200);
     }
 
 
@@ -57,7 +58,8 @@ public class DatabaseValuesServlet extends HttpServlet {
 
         System.out.println("In the following servlet " + this.getClass());
         System.out.println("This is the request URI: " + req.getRequestURI());
-        resp = new DatabaseRequestHelper().process(req,resp);
+        respWriter.write(new DatabaseRequestHelper().process(req));
+        resp.setStatus(200);
         //req.getRequestDispatcher(nextView).forward(req, resp);//change this so that the specific page gets the response
     }
 }

@@ -230,6 +230,24 @@ function configureMyReimbursementsView() {
 function configureProfileView() {
 
     console.log('in configureProfileView()');
+    //document.getElementById('mainParagraphProfile').innerText = getUserInfo();
+
+    
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'userinfo.database');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+            let userInfoView =  JSON.parse(xhr.responseText);
+            console.log("userInfoView: " + userInfoView);
+            document.getElementById('mainParagraphProfile').innerText = userInfoView.firstName;
+        }
+
+    }
+
 
 }
 
@@ -394,15 +412,22 @@ function getUserInfo() {
 
     console.log('in getUserInfo()');
 
+    let xhr = new XMLHttpRequest();
+
     xhr.open('GET', 'userinfo.database');
     xhr.send();
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            return userInfo = JSON.parse(xhr.responceText);
+
+            let userInfoView =  JSON.parse(xhr.responseText);
+            console.log("userInfoView: " + userInfoView);
+            return userInfoView;
         }
 
     }
+
+    return 'empty';
 }
 
 

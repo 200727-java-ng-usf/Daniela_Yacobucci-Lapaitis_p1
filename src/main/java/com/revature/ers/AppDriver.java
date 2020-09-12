@@ -27,5 +27,6 @@ public class AppDriver {
         //TODO check wether user can get to ... for example home... thru url
         //TODO change black at top to fill
         //TODO change colors of nav bar
+        //TODO do a while(undefined) in JS configureprofileview to be able to use getuserinfo
     }
 }
