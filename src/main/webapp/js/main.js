@@ -1,14 +1,61 @@
 const APP_VIEW = document.getElementById('app-view');
+const NAV_BAR_CONTAINER = document.getElementById('navbar-container');
+
 
 window.onload = function() {
+
+    loadLoggedOutFullHome();
+
+}
+
+//-------------------LOAD FULL HOMES------------------------
+
+function loadLoggedOutFullHome(){
     loadLogin();
-    document.getElementById('toLogin').addEventListener('click', loadLogin);
-    document.getElementById('toRegister').addEventListener('click', loadRegister);
-    document.getElementById('toHome').addEventListener('click', loadHome);
-    document.getElementById('toLogout').addEventListener('click', logout);
+    loadLoggedOutNavbar();
+}
+
+function loadLoggedInFullHome(){
+    loadHome();
+    loadLoggedInNavbar();
 }
 
 //----------------------LOAD VIEWS-------------------------
+
+function loadLoggedOutNavbar(){
+
+    console.log('in loadLoggedOutNavbar()');
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'loadLoggedOutNavbar.view',true);
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            NAV_BAR_CONTAINER.innerHTML = xhr.responseText;
+            configureLoggedOutNavbar();
+        }
+    }
+
+}
+
+function loadLoggedInNavbar(){
+
+    console.log('in loadLoggedInnavbar()')
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'loadLoggedInNavbar.view', true);
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            NAV_BAR_CONTAINER.innerHTML = xhr.responseText;
+            configureLoggedInNavbar();
+        }
+    }
+}
 
 function loadLogin() {
 
@@ -98,6 +145,18 @@ function loadMyReimbursements() {
 
 //----------------CONFIGURE VIEWS--------------------
 
+function configureLoggedOutNavbar(){
+    document.getElementById('toLogin').addEventListener('click', loadLogin);
+    document.getElementById('toRegister').addEventListener('click', loadRegister);
+}
+
+function configureLoggedInNavbar(){
+    document.getElementById('toHome').addEventListener('click', loadHome);
+    //document.getElementById('toHome').addEventListener('click', loadHome); need a profile
+    document.getElementById('toLogout').addEventListener('click', logout);
+
+}
+
 function configureLoginView() {
 
     console.log('in configureLoginView()');
@@ -142,6 +201,8 @@ function configureMyReimbursementsView() {
 
 }
 
+
+
 //------------------OPERATIONS-----------------------
 
 function login() {
@@ -170,7 +231,7 @@ function login() {
 
             document.getElementById('login-message').setAttribute('hidden', true);
             localStorage.setItem('authUser', xhr.responseText);
-            loadHome();
+            loadLoggedInFullHome();
 
         } else if (xhr.readyState == 4 && xhr.status == 401) {
 
@@ -235,7 +296,7 @@ function logout() {
         if (xhr.readyState == 4 && xhr.status == 204) {
             console.log('logout successful!');
             localStorage.removeItem('authUser');
-            loadLogin();
+            loadLoggedOutFullHome()
         }
     }
 }
@@ -314,7 +375,7 @@ function validateLoginForm() {
 
     if (!un || !pw) {
         document.getElementById('login-message').removeAttribute('hidden');
-        document.getElementById('login-message').innerText = 'You must provided values for all fields in the form!';
+        document.getElementById('login-message').innerText = 'You must provide values for all fields in the form!';
         document.getElementById('login').setAttribute('disabled', true);
     } else {
         document.getElementById('login').removeAttribute('disabled');

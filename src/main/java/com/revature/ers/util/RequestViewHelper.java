@@ -11,8 +11,19 @@ public class RequestViewHelper {
 
         switch (req.getRequestURI()) {
 
+            //nav bar views
+            case "/loadLoggedOutNavbar.view":
+            case "/ers/loadLoggedOutNavbar.view":
 
-            case "login.view":
+                return "partials/navbarpartials/loggedoutnavbar.html";
+
+            //nav bar views
+            case "/loadLoggedInNavbar.view":
+            case "/ers/loadLoggedInNavbar.view":
+
+                return "partials/navbarpartials/loggedinnavbar.html";
+
+            //app body views
             case "/login.view":
             case "/ers/login.view":
 
