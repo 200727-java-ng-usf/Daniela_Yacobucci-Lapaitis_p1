@@ -47,5 +47,10 @@ public class ErsUserService {
         return true;
     }
 
+    public ErsUser findUserByUsername(String username){
+        return ersUserRepo.findUserByUsername(username)
+                .orElseThrow(AuthenticationException::new);
+    }
+
     //TODO add register method
 }

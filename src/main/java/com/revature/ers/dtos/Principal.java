@@ -46,10 +46,6 @@ public class Principal {
         this.role = role;
     }
 
-    public String stringify() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(this);
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -73,6 +69,18 @@ public class Principal {
                 ", username='" + username + '\'' +
                 ", role='" + role + '\'' +
                 '}';
+    }
+
+    //Convenience methods
+    public String stringify() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(this);
+    }
+
+    public static Principal JSONtoObj(String principalJSON) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Principal principalObject = mapper.readValue(principalJSON, Principal.class);
+        return principalObject;
     }
 
 }

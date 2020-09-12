@@ -19,6 +19,21 @@ public class ErrorResponse {
         this.timestamp = LocalDateTime.now().toString();
     }
 
+    //For default error responce messages
+    public ErrorResponse(int status) {
+        this.status = status;
+
+        switch(status){
+
+            case 400:
+                this.message = "Unknown client error. Bad request";
+            case 500:
+                this.message = "Internal Server Error. It's not you, it's our bad...";
+        }
+
+        this.timestamp = LocalDateTime.now().toString();
+    }
+
     public int getStatus() {
         return status;
     }

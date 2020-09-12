@@ -28,6 +28,7 @@ public class AuthServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("In the following servlet: " + this.getClass());
         req.getSession().invalidate();
         resp.setStatus(204);
     }
@@ -35,6 +36,7 @@ public class AuthServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        System.out.println("In the following servlet: " + this.getClass());
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter respWriter = resp.getWriter();
         resp.setContentType("application/json");
@@ -73,7 +75,7 @@ public class AuthServlet extends HttpServlet {
 
             e.printStackTrace();
             resp.setStatus(500); // 500 = INTERNAL SERVER ERROR
-            ErrorResponse err = new ErrorResponse(500, "It's not you, it's us. Our bad...");
+            ErrorResponse err = new ErrorResponse(500, "Internal Server Error. It's not you, it's us. Our bad...");
             respWriter.write(mapper.writeValueAsString(err));
 
         }

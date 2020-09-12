@@ -1,6 +1,8 @@
 const APP_VIEW = document.getElementById('app-view');
 const NAV_BAR_CONTAINER = document.getElementById('navbar-container');
 
+let currentPartialInAppView;
+
 
 window.onload = function() {
 
@@ -66,6 +68,8 @@ function loadLogin() {
     let xhr = new XMLHttpRequest();
 
     xhr.open('GET', 'login.view', true); // third parameter (default true) indicates we want to make this req async
+
+
     xhr.send();
 
     xhr.onreadystatechange = function() {
@@ -386,6 +390,33 @@ function isEmailAvailable() {
     }
 }
 
+function getUserInfo() {
+
+    console.log('in getUserInfo()');
+
+    xhr.open('GET', 'userinfo.database');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            return userInfo = JSON.parse(xhr.responceText);
+        }
+
+    }
+}
+
+
+function isUserLoggedIn(){
+    if (!localStorage.getItem('authUser')) {
+        console.log('No user logged in, navigating to login screen');
+        loadLoggedOutFullHome()
+        return false;
+    }
+
+    return true;
+}
+
+
 //---------------------FORM VALIDATION-------------------------
 
 function validateLoginForm() {
@@ -430,14 +461,4 @@ function validateRegisterForm() {
         document.getElementById('register').removeAttribute('disabled');
         document.getElementById('reg-message').setAttribute('hidden', true);
     }
-}
-
-function isUserLoggedIn(){
-    if (!localStorage.getItem('authUser')) {
-        console.log('No user logged in, navigating to login screen');
-        loadLoggedOutFullHome()
-        return false;
-    }
-
-    return true;
 }

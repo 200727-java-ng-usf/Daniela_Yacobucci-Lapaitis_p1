@@ -15,6 +15,7 @@ public class ValidationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        System.out.println("In the following servlet: " + this.getClass());
         boolean isValid = new ValidationHelper().process(req);
 
         if (isValid) {
