@@ -235,7 +235,7 @@ function configureProfileView() {
     
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'userinfo.database');
+    xhr.open('GET', 'userinfo.read');
     xhr.send();
 
     xhr.onreadystatechange = function() {

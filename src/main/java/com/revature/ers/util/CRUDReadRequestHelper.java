@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class DatabaseRequestHelper {
+public class CRUDReadRequestHelper {
 
     ErsUserService ersUserService = new ErsUserService();
     ObjectMapper mapper = new ObjectMapper();
@@ -26,15 +26,15 @@ public class DatabaseRequestHelper {
         switch(req.getRequestURI()){
             case "/userinfo.database":
             case "/ers/userinfo.database":
-                response = httpGetUserInfo(principal);
+                response = httpReadUserInfo(principal);
 
         }
 
         return (response);
     }
 
-
-    private String httpGetUserInfo(Principal principal){
+    //ERSUsers
+    private String httpReadUserInfo(Principal principal){
 
         String userJSON = "";
         try {
@@ -44,7 +44,7 @@ public class DatabaseRequestHelper {
             UserView loggedInUserView = new UserView(principalUser);
             System.out.println("UserView: " + loggedInUserView);
             userJSON = mapper.writeValueAsString(loggedInUserView);
-            //TODO check of 200 status is appropriate
+
 
 
         }
@@ -55,5 +55,7 @@ public class DatabaseRequestHelper {
         return userJSON;
 
     }
+
+
 
 }
