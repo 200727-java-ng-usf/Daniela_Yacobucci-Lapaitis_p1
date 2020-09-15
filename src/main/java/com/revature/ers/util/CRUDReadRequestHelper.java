@@ -20,12 +20,12 @@ public class CRUDReadRequestHelper {
 
     public String process(HttpServletRequest req) throws IOException {
 
-        System.out.println("[Request View Helper] req.getRequestURI() " + req.getRequestURI());
+        System.out.println("[CRUDCreateRequestHelper] req.getRequestURI() " + req.getRequestURI());
         Principal principal = Principal.JSONtoObj((String) req.getSession().getAttribute("principal"));
 
         switch(req.getRequestURI()){
-            case "/userinfo.database":
-            case "/ers/userinfo.database":
+            case "/userinfo.read":
+            case "/ers/userinfo.read":
                 response = httpReadUserInfo(principal);
 
         }

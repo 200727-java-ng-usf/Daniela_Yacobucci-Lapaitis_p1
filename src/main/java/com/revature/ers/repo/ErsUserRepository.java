@@ -1,15 +1,13 @@
 package com.revature.ers.repo;
 
 import com.revature.ers.models.ErsUser;
+import com.revature.ers.models.ErsUserRole;
 import com.revature.ers.util.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,8 +92,6 @@ public class ErsUserRepository {
 
         } catch (Exception e){
 
-        } finally {
-            session.close();
         }
 
     }
@@ -119,8 +115,6 @@ public class ErsUserRepository {
         } catch (Exception e){
 
             System.out.println(e.getStackTrace());
-        } finally {
-            session.close();
         }
 
     }
@@ -152,8 +146,6 @@ public class ErsUserRepository {
         } catch (Exception e) {
             if (tx!= null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
 
         //TODO remove breadcrumb
@@ -193,10 +185,8 @@ public class ErsUserRepository {
             tx.commit();
 
         } catch (Exception e) {
-            if (tx!= null) tx.rollback();
+            if (tx != null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
 
         return (_user);
@@ -227,14 +217,69 @@ public class ErsUserRepository {
             tx.commit();
 
         } catch (Exception e) {
-            if (tx!= null) tx.rollback();
+            if (tx != null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
 
 
         return (_user);
+    }
+
+    public boolean changeRoleToInactive (ErsUser ersUser) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+
+            tx = session.beginTransaction();
+
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set("ersUserRole", new ErsUserRole(4,"Inactive"));
+
+            cu.where(cb.equal(root.get("id"), ersUser.getErsUserId()));
+
+            tx.commit();
+
+            return true;
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public void changeRoleToInactiveById (int id) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+
+            tx = session.beginTransaction();
+
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set( "firstName", "Delospalotes");
+
+            cu.where(cb.equal(root.get("id"), id));
+
+            Query query = session.createQuery(cu);
+            query.executeUpdate();
+
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+
+        }
     }
 }
 /*

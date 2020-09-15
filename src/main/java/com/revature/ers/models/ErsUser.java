@@ -1,5 +1,9 @@
 package com.revature.ers.models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ers.dtos.Principal;
+
 import javax.persistence.*;
 
 @Entity
@@ -97,5 +101,11 @@ public class ErsUser {
                 ", email='" + email + '\'' +
                 ", ersUserRole=" + ersUserRole +
                 '}';
+    }
+
+    public static ErsUser JSONtoObj(String ersUserJSON) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ErsUser ersUser = mapper.readValue(ersUserJSON, ErsUser.class);
+        return ersUser;
     }
 }

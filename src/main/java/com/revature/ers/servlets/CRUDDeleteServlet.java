@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 public class CRUDDeleteServlet extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ObjectMapper mapper = new ObjectMapper();
         PrintWriter respWriter = resp.getWriter();
@@ -33,7 +33,10 @@ public class CRUDDeleteServlet extends HttpServlet {
 
         System.out.println("In the following servlet " + this.getClass());
         System.out.println("This is the request URI: " + req.getRequestURI());
-        respWriter.write(new CRUDDeleteRequestHelper().process(req));
-        resp.setStatus(200);
+        new CRUDDeleteRequestHelper().process(req);
+        resp.setStatus(201);
+
+
     }
+
 }

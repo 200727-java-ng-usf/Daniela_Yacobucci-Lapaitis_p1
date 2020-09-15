@@ -52,5 +52,17 @@ public class ErsUserService {
                 .orElseThrow(AuthenticationException::new);
     }
 
+//    public void softDeleteUser(ErsUser ersUser){
+//
+//        boolean result = ersUserRepo.changeRoleToInactive(ersUser);
+//
+//    }
+
+    public void softDeleteUserById(int id){
+
+        ersUserRepo.changeRoleToInactiveById(id);
+
+    }
+
     //TODO add register method
 }
