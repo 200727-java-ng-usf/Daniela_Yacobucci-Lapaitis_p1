@@ -1,16 +1,10 @@
 package com.revature.ers.models;
 
-import javax.persistence.*;
 
-@Entity
-@Table(name = "ers_reimbursement_types", schema = "project_1")
 public class ErsReimbursementType {
 
-    @Id @GeneratedValue
-    @Column(name = "reimb_type_id")
     private int reimbTypeId;
 
-    @Column(name = "reimb_type")
     private String reimbTypeName;
 
     public ErsReimbursementType(){

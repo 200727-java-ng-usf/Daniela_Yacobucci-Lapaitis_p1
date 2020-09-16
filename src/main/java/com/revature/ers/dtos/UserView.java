@@ -19,7 +19,7 @@ public class UserView {
         this.firstName = ersUser.getFirstName();
         this.lastName = ersUser.getLastName();
         this.email = ersUser.getEmail();
-        this.roleName = ersUser.getErsUserRole().getRoleName();
+        //this.roleName = ersUser.getErsUserRole().get;
     }
 
     public int getId() {

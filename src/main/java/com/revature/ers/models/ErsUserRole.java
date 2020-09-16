@@ -1,50 +1,82 @@
 package com.revature.ers.models;
 
-import javax.persistence.*;
+public enum ErsUserRole {
 
-@Entity
-@Table(name = "ers_user_roles", schema = "project_1")
-public class ErsUserRole {
+    // values declared within enums are constants and are comma separated
 
-    @Id @GeneratedValue
-    @Column(name = "role_id")
-    private int roleId;
+    ADMIN("Admin"),//.ordinal=0
+    FINANCE_MANAGER("Fin Mngr"),
+    EMPLOYEE("Employee"),
+    INACTIVE("Inactive");
 
-    @Column(name = "role_name")
-    private String roleName;
+    public String roleName;
 
-    public ErsUserRole(){
+    ErsUserRole(String Name) {
+        this.roleName = Name;
+    }
+
+    public static int getIDFromName(String name) {
+
+        ErsUserRole currentRole = ErsUserRole.getByName(name);
+
+        if(currentRole.ordinal() >= 0 && currentRole.ordinal() <= 4 )
+        {
+            return currentRole.ordinal();
+        } else {
+            return 3;
+        }
 
     }
 
-    public ErsUserRole(int roleId, String roleName) {
-        this.roleId = roleId;
-        this.roleName = roleName;
+    public static int getDBIDFromName(String name) {
+
+        ErsUserRole currentRole = ErsUserRole.getByName(name);
+
+        if(currentRole.ordinal() + 1 > 0 && currentRole.ordinal() + 1 < 4 )
+        {
+            return currentRole.ordinal()+1;
+        } else {
+            return 4;
+        }
+
     }
 
-    public int getRoleId() {
-        return roleId;
+    public static ErsUserRole getByID(int id) {
+
+        for (ErsUserRole role : ErsUserRole.values()) {
+            if(role.ordinal() == id) {
+                return role;
+            }
+        }
+
+        return null;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public static ErsUserRole getByDBID(int id) {
+
+        for (ErsUserRole role : ErsUserRole.values()) {
+            if(role.ordinal() + 1== id) {
+                return role;
+            }
+        }
+
+        return null;
     }
 
-    public String getRoleName() {
-        return roleName;
-    }
+    public static ErsUserRole getByName(String name) {
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+        for (ErsUserRole role : ErsUserRole.values()) {
+            if (role.roleName.equals(name)) {
+                return role;
+            }
+        }
+
+        return INACTIVE;
+
     }
 
     @Override
     public String toString() {
-        return "ErsUserRole{" +
-                "roleId=" + roleId +
-                ", roleName='" + roleName + '\'' +
-                '}';
+        return roleName;
     }
-
-    //TODO display 'Fin mngr' as 'Finance Manager'
 }

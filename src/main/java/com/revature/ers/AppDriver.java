@@ -1,6 +1,7 @@
 package com.revature.ers;
 
-import com.revature.ers.repo.ErsUserRepository;
+// import com.revature.ers.repo.ErsUserRepository;
+import com.revature.ers.models.ErsUserRole;
 import com.revature.ers.services.ErsUserService;
 
 public class AppDriver {
@@ -9,13 +10,19 @@ public class AppDriver {
 
     public static void main(String[] args) {
 
-        ErsUserService userService = new ErsUserService();
-
-        ErsUserRepository userRepo = new ErsUserRepository();
-
-        System.out.println(userRepo.findUserByCredentials("meghvu","clowntime").get());
-        // System.out.println(userService.authenticate("meghvu","clowntime").get());
+        System.out.println(ErsUserRole.getIDFromName("Admin"));
+        System.out.println(ErsUserRole.getDBIDFromName("Admin"));
+        System.out.println(ErsUserRole.getByID(1));
+        System.out.println(ErsUserRole.getByDBID(1));
+        System.out.println(ErsUserRole.getByName("beans"));
 //
+//        ErsUserService userService = new ErsUserService();
+//
+//        ErsUserRepository userRepo = new ErsUserRepository();
+//
+//        System.out.println(userRepo.findUserByCredentials("meghvu","clowntime").get());
+//        // System.out.println(userService.authenticate("meghvu","clowntime").get());
+////
 //        ErsReimbursementTypeRepository.printErsReimbursementTypes();
 //        ErsUserRoleRepository.printErsUserRoles();
 //        ErsUserRepository.printErsUsers();

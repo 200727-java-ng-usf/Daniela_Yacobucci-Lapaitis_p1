@@ -18,7 +18,7 @@ public class ErsUserService {
             throw new InvalidRequestException("Invalid credential values provided!");
         }
 
-        //ersUser = ersUserRepo.findUserByCredentials(username, password).get();
+        ersUser = ersUserRepo.findUserByCredentials(username, password).get();
         //return ersUser;
         //TODO add this change to notes
 

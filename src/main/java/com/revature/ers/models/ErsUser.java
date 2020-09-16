@@ -4,34 +4,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.dtos.Principal;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "ers_users", schema = "project_1")
 //TODO add schema on application.properties and reference it on all tables
 public class ErsUser {
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="ers_user_id")
     private int ersUserId;
 
-    @Column(name="username")
     private String username;
 
-    @Column(name="password")
     private String password;
 
-    @Column(name="first_name")
     private String firstName;
 
-    @Column(name="last_name")
     private String lastName;
 
-    @Column(name="email")
     private String email;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="user_role_id")
     private ErsUserRole ersUserRole;
 
     public int getErsUserId() {
