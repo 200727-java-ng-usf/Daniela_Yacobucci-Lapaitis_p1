@@ -10,7 +10,8 @@ public class Principal {
 
     private int id;
     private String username;
-    private String role;
+    private String roleName;
+    private int roleId;
 
     public Principal() {
         super();
@@ -19,7 +20,8 @@ public class Principal {
     public Principal(ErsUser ersUser) {
         this.id = ersUser.getErsUserId();
         this.username = ersUser.getUsername();
-        this.role = ersUser.getErsUserRole().toString();
+        this.roleName = ersUser.getErsUserRole().getRoleName();
+        this.roleId = ersUser.getErsUserRole().getRoleId();
     }
 
     public int getId() {
@@ -38,14 +40,21 @@ public class Principal {
         this.username = username;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoleName(String role) {
+        this.roleName = roleName;
     }
 
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -53,13 +62,14 @@ public class Principal {
         if (o == null || getClass() != o.getClass()) return false;
         Principal principal = (Principal) o;
         return id == principal.id &&
+                roleId == principal.roleId &&
                 Objects.equals(username, principal.username) &&
-                Objects.equals(role, principal.role);
+                Objects.equals(roleName, principal.roleName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, role);
+        return Objects.hash(id, username, roleName, roleId);
     }
 
     @Override
@@ -67,7 +77,8 @@ public class Principal {
         return "Principal{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", role='" + role + '\'' +
+                ", roleName='" + roleName + '\'' +
+                ", roleId=" + roleId +
                 '}';
     }
 

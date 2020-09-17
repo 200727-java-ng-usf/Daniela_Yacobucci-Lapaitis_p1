@@ -56,8 +56,45 @@ public class RequestViewHelper {
 
                 return "partials/profile.html";
 
+            //specific home views
+            case "/employeeHome.view":
+            case "/ers/employeeHome.view":
+
+                if (principal == null || principal.equals("")) {
+                    return "partials/employee/partialNotAllowed.html";
+                }
+
+                return "partials/employee/employeeHome.html";
+
+            case "/adminHome.view":
+            case "/ers/adminHome.view":
+
+                if (principal == null || principal.equals("")) {
+                    return "partials/employee/partialNotAllowed.html";
+                }
+
+                return "partials/admin/adminHome.html";
+
+            case "/financeManagerHome.view":
+            case "/ers/financeManagerHome.view":
+
+                if (principal == null || principal.equals("")) {
+                    return "partials/employee/partialNotAllowed.html";
+                }
+
+                return "partials/financeManager/financeManagerHome.html";
+
+            case "/myReimbursements.view":
+            case "/ers/myReimbursements.view":
+
+
+                //return "partials/employee/myReimbursements.html";
+
+                return "partials/register.html";
+
             default:
-                return null;
+                return "partials/employee/myReimbursements.html";
+
 
         }
 

@@ -1,5 +1,6 @@
 const APP_VIEW = document.getElementById('app-view');
 const NAV_BAR_CONTAINER = document.getElementById('navbar-container');
+const HOME_CONTAINER = document.getElementById('user-home-container');
 
 let currentPartialInAppView;
 
@@ -18,8 +19,34 @@ function loadLoggedOutFullHome(){
 }
 
 function loadLoggedInFullHome(){
-    loadHome();
+
+    //loadHome();
     loadLoggedInNavbar();
+
+    let authUser = JSON.parse(localStorage.getItem('authUser'));;
+
+    console.log(authUser.username);
+    
+    console.log("authuser role: " + authUser.roleName);
+
+    if(authUser.roleName=='Admin'){
+        console.log('user is admin!');
+        loadAdminHomeView();
+
+    } else if(authUser.roleName=='Employee'){
+        console.log('user is employee!');
+        loadEmployeeHomeView();
+
+    } else if(authUser.roleName=='Fin Man'){
+        console.log('user is fin man!');
+        loadFinancialManagerHomeView();
+
+    } else {
+        console.log('user is not allowed!');
+
+    }
+
+
 }
 
 //----------------------LOAD VIEWS-------------------------
@@ -109,8 +136,6 @@ function loadHome() {
 
     let xhr = new XMLHttpRequest();
 
-    console.log(localStorage.getItem('authUser'));
-
     xhr.open('GET', 'home.view');
     xhr.send();
 
@@ -122,6 +147,82 @@ function loadHome() {
     }
 
 }
+
+//--------------- Specific home loads----------------------------
+
+function loadEmployeeHomeView(){
+
+    console.log('in loadEmployeeHomeView()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'employeeHome.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureEmployeeHomeView();
+
+        }
+
+    }
+
+}
+
+function loadAdminHomeView(){
+
+    console.log('in loadAdminHomeView()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'adminHome.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureAdminHomeView();
+
+        }
+
+    }
+
+}
+
+function loadFinanceManagerHomeView(){
+
+    console.log('in loadFinanceManagerHomeView()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'financeManagerHome.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureFinanceManagerHomeView();
+
+        }
+
+    }
+
+}
+
+//---------------------------------------------------------------
 
 function loadMyReimbursements() {
 
@@ -177,7 +278,26 @@ function configureLoggedOutNavbar(){
 }
 
 function configureLoggedInNavbar(){
-    document.getElementById('toHome').addEventListener('click', loadHome);
+
+    let authUser = JSON.parse(localStorage.getItem('authUser'));;
+
+    if(authUser.roleName=='Admin'){
+        console.log('user is admin!');
+        document.getElementById('toHome').addEventListener('click', loadAdminHomeView);
+
+    } else if(authUser.roleName=='Employee'){
+        console.log('user is employee!');
+        document.getElementById('toHome').addEventListener('click', loadEmployeeHomeView);
+
+    } else if(authUser.roleName=='Fin Man'){
+        console.log('user is fin man!');
+        document.getElementById('toHome').addEventListener('click', loadFinanceManagerHomeView);
+
+    } else {
+        console.log('user is not allowed!');
+
+    }
+
     document.getElementById('toProfile').addEventListener('click', loadProfile);
     document.getElementById('toLogout').addEventListener('click', logout);
 
@@ -213,14 +333,66 @@ function configureHomeView() {
     console.log('in configureHomeView()');
     let authUser = JSON.parse(localStorage.getItem('authUser'));
 
-
-    document.getElementById('loggedInUsername').innerText = authUser.username;
+    document.getElementById('loggedInEmployeeUsername').innerText = authUser.username;
 
 }
+
+//----------------------------------
+function configureAdminHomeView() {
+
+    console.log('in configureHomeView()');
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    document.getElementById('loggedInAdminUsername').innerText = authUser.username;
+
+}
+
+function configureEmployeeHomeView() {
+
+    console.log('in configureHomeView()');
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    document.getElementById('loggedInEmployeeUsername').innerText = authUser.username;
+
+}
+
+function configureManagerHomeView() {
+
+    console.log('in configureHomeView()');
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    document.getElementById('loggedInFinanceManagerUsername').innerText = authUser.username;
+
+}
+
+//--------------- Specific home views----------------------------
+
+function configureEmployeeHomeView(){
+
+    console.log('in configureEmployeeHomeView()');
+
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    document.getElementById('loggedInEmployeeUsername').innerText = authUser.username;
+
+    document.getElementById('viewMyReimbursements').addEventListener('click', loadMyReimbursements);
+
+}
+
+//---------------------------------------------------------------
 
 function configureMyReimbursementsView() {
 
     console.log('in configureMyReimbursementsView()');
+
+    //let authUser = JSON.parse(localStorage.getItem('authUser'));
+    //document.getElementById('loggedInUsername').innerText = authUser.username;
+
+}
+
+function configureAllReimbursementsView() {
+
+    console.log('in configureAllReimbursementsView()');
 
     //let authUser = JSON.parse(localStorage.getItem('authUser'));
     //document.getElementById('loggedInUsername').innerText = authUser.username;
@@ -239,15 +411,62 @@ function configureProfileView() {
     xhr.send();
 
     xhr.onreadystatechange = function() {
+
         if (xhr.readyState == 4 && xhr.status == 200) {
 
+
             let userInfoView =  JSON.parse(xhr.responseText);
-            console.log("userInfoView: " + userInfoView);
-            document.getElementById('mainParagraphProfile').innerText = userInfoView.firstName;
+            //console.log("JSON responce text" + JSON.parse(xhr.responseText));
+            //console.log("userInfoView: " + userInfoView);
+            //console.log("userInfoViewRole: " + userInfoView.role);
+            //let userRole = JSON.parse(userInfoView.role);
+
+
+            
+            let table = document.getElementById("profile-table");
+            //userInfoView.firstName
+            let head = document.createElement("thead");
+            let body = document.createElement("tbody");
+            table.appendChild(head);
+            head.innerHTML =  "<tr>" 
+                           + "<th>ID</th>"
+                           + "<th>Username</th>"
+                           + "<th>First Name</th>"
+                           + "<th>Last Name</th>"
+                           + "<th>Email</th>"
+                           + "<th>Role</th>";
+
+            table.appendChild(body);
+
+            let row = document.createElement("tr");
+            row.innerHTML   = "<td>" + userInfoView.id + "</td>" 
+                            + "<td>" + userInfoView.username + "</td>"
+                            + "<td>" + userInfoView.firstName + "</td>"
+                            + "<td>" + userInfoView.lastName + "</td>"
+                            + "<td>" + userInfoView.email + "</td>"
+                            + "<td>" + userInfoView.roleName + "</td>";
+            body.appendChild(row);
+            
+            // for (let i = 0; i < userInfoView; i++){
+            //     console.log("in loop");
+            //     let row = document.createElement("tr");
+
+            //     row.innerHTML = "<td>" + userInfoView[i].id + "</td>" 
+            //                   + "<td>" + userInfoView[i].username + "</td>"
+            //                   + "<td>" + userInfoView[i].firstName + "</td>"
+            //                   + "<td>" + userInfoView[i].lastName + "</td>"
+            //                   + "<td>" + auserInfoView[i].email + "</td>"
+            //                   + "<td>" + userInfoView[i].role + "</td>";
+
+            //     body.appendChild(row);
+            // }
+
+
+            document.getElementById('profile').appendChild(table);
+
         }
 
     }
-
 
 }
 

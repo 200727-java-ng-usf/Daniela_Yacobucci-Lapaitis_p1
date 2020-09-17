@@ -1,12 +1,15 @@
-<div id="home container">
+<div id="employee home container">
 
-    <h1>Welcome, <span id="loggedInUsername"></span></h1>
     <div>
-        Home works!
+        Employee home works!
     </div>
 
-    <form action = "/project1/ers/myreimbursements" method = "POST">
-        <input type= "submit" value="View my reimbursements">
+    <h1>Welcome <span id="loggedInEmployeeUsername"></span></h1>
+
+    <button type="button" class="btn btn-primary" id="viewMyReimbursements">View my Reimbursements</button>
+
+    <form>
+        <input type= "submit" onclick="loadMyReimbursements()" value="View my reimbursements">
     </form>
 
     <br>

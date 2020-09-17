@@ -35,6 +35,8 @@ public class CRUDDeleteRequestHelper {
     private void httpSoftDeleteUser (HttpServletRequest req){
 
         String deletedErsUserId = req.getParameter("id");
+
+        System.out.println("deletedErsUserId " + deletedErsUserId);
         if (deletedErsUserId != null) {
             int id = Integer.parseInt(deletedErsUserId);
             ersUserService.softDeleteUserById(id);
