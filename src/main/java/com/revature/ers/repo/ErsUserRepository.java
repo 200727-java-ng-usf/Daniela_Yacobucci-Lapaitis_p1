@@ -21,16 +21,17 @@ public class ErsUserRepository {
 
     //sessionFactory
 
-    public static void printErsUsers(){
+    public Optional<List<ErsUser>>  getAllErsUsers(){
 
         session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
-
+        Optional<List<ErsUser>> _ersUsers = Optional.empty();
         try{
             //HQL
             tx = session.beginTransaction();
             List<ErsUser> ersUsers = session.createQuery("FROM ErsUser ", ErsUser.class).list();
+            _ersUsers = Optional.of(ersUsers);
 
-            for (ErsUser ersu : ersUsers) {
+            for (ErsUser ersu : _ersUsers.get()) {
                 System.out.println(ersu.toString());
             }
 
@@ -38,9 +39,9 @@ public class ErsUserRepository {
         } catch (Exception e) {
             if (tx!= null) tx.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
+
+        return _ersUsers;
     }
 
     public static void printErsUsersCriteria(){
@@ -281,6 +282,7 @@ public class ErsUserRepository {
 
         }
     }
+
 }
 /*
 

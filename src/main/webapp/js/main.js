@@ -466,15 +466,12 @@ function configureProfileView() {
 
 
             let userInfoView =  JSON.parse(xhr.responseText);
-            //console.log("JSON responce text" + JSON.parse(xhr.responseText));
-            //console.log("userInfoView: " + userInfoView);
-            //console.log("userInfoViewRole: " + userInfoView.role);
-            //let userRole = JSON.parse(userInfoView.role);
 
             let table = document.getElementById("profile-table");
-            //userInfoView.firstName
+
             let head = document.createElement("thead");
             let body = document.createElement("tbody");
+
             table.appendChild(head);
             head.innerHTML =  "<tr>" 
                            + "<th>ID</th>"
@@ -584,6 +581,55 @@ function configureViewUsersView(){
 
     console.log('in configureViewUsersView()');
 
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'getAllUsers.read');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+
+            let userInfoView =  JSON.parse(xhr.responseText);
+
+            let table = document.getElementById("view-users-table");
+
+            let head = document.createElement("thead");
+            let body = document.createElement("tbody");
+            
+            table.appendChild(head);
+
+            head.innerHTML = "<th>ID</th>"
+                           + "<th>Username</th>"
+                           + "<th>First Name</th>"
+                           + "<th>Last Name</th>"
+                           + "<th>Email</th>"
+                           + "<th>Role</th>";
+            
+            table.appendChild(body);
+
+            for (let i = 0; i < userInfoView.length; i++){
+
+                let row = document.createElement("tr");
+                row.innerHTML = "<td>" + userInfoView[i].id + "</td>" 
+                              + "<td>" + userInfoView[i].username + "</td>"
+                              + "<td>" + userInfoView[i].firstName + "</td>"
+                              + "<td>" + userInfoView[i].lastName + "</td>"
+                              + "<td>" + userInfoView[i].email + "</td>"
+                              + "<td>" + userInfoView[i].roleName + "</td>";
+
+                body.appendChild(row);
+            }
+
+
+
+            //document.getElementById('profile').appendChild(table);
+
+        }
+
+    }
+
 }
 
 
@@ -605,9 +651,8 @@ function configureFinanceManagerHomeView() {
 function configureAllReimbursementsView() {
 
     console.log('in configureAllReimbursementsView()');
-
-    //let authUser = JSON.parse(localStorage.getItem('authUser'));
-    //document.getElementById('loggedInUsername').innerText = authUser.username;
+    
+    
 
 }
 //#endregion

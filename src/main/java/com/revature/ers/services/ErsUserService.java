@@ -5,6 +5,8 @@ import com.revature.ers.exceptions.InvalidRequestException;
 import com.revature.ers.models.ErsUser;
 import com.revature.ers.repo.ErsUserRepository;
 
+import java.util.List;
+
 public class ErsUserService {
 
     private ErsUserRepository ersUserRepo = new ErsUserRepository();
@@ -57,6 +59,11 @@ public class ErsUserService {
 //        boolean result = ersUserRepo.changeRoleToInactive(ersUser);
 //
 //    }
+
+    public List<ErsUser> getAllUsers(){
+        return ersUserRepo.getAllErsUsers()
+                .orElseThrow(AuthenticationException::new);
+    }
 
     public void softDeleteUserById(int id){
 

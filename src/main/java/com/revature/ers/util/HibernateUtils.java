@@ -40,7 +40,8 @@ public class HibernateUtils {
                     .addAnnotatedClass(ErsReimbursementStatus.class)
                     .addAnnotatedClass(ErsReimbursementType.class)
                     .addAnnotatedClass(ErsUserRole.class)
-                    .addAnnotatedClass(ErsUser.class);
+                    .addAnnotatedClass(ErsUser.class)
+                    .addAnnotatedClass(ErsReimbursement.class);
 
 
             config.setImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE);

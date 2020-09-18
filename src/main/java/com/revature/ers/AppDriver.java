@@ -1,6 +1,9 @@
 package com.revature.ers;
 
+import com.revature.ers.models.ErsReimbursement;
+import com.revature.ers.repo.ErsReimbursementRepository;
 import com.revature.ers.repo.ErsUserRepository;
+import com.revature.ers.services.ErsReimbursementService;
 import com.revature.ers.services.ErsUserService;
 
 public class AppDriver {
@@ -9,11 +12,21 @@ public class AppDriver {
 
     public static void main(String[] args) {
 
-        ErsUserService userService = new ErsUserService();
 
-        ErsUserRepository userRepo = new ErsUserRepository();
 
-        System.out.println(userRepo.findUserByCredentials("meghvu","clowntime").get());
+//        ErsUserService userService = new ErsUserService();
+//
+        //ErsUserRepository userRepo = new ErsUserRepository();
+
+        ErsReimbursementService rembService = new ErsReimbursementService();
+
+        //ErsReimbursementRepository reimbRepo = new ErsReimbursementRepository();
+
+        //reimbRepo.getAllReimbursements();
+
+        System.out.println(rembService.getAllReimbursements());
+//
+//        System.out.println(userRepo.findUserByCredentials("meghvu","clowntime").get());
         // System.out.println(userService.authenticate("meghvu","clowntime").get());
 //
 //        ErsReimbursementTypeRepository.printErsReimbursementTypes();
