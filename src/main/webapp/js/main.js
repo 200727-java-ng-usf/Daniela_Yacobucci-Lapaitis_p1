@@ -539,6 +539,64 @@ function configureMyReimbursementsView() {
 
     console.log('in configureMyReimbursementsView()');
 
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'getAllReimbursements.read');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+
+            let allReimbursementsView =  JSON.parse(xhr.responseText);
+
+            let table = document.getElementById("load-my-reimbursements-table");
+
+            let head = document.createElement("thead");
+            let body = document.createElement("tbody");
+            
+            table.appendChild(head);
+
+            head.innerHTML = "<th>ID</th>"
+                           + "<th>amount</th>"
+                           + "<th>submitted</th>"
+                           + "<th>resolved</th>"
+                           + "<th>description</th>"
+                           + "<th>reciept</th>"
+                           + "<th>author</th>"
+                           + "<th>resolver</th>"
+                           + "<th>status</th>"
+                           + "<th>type</th>";
+            
+            table.appendChild(body);
+
+            for (let i = 0; i < allReimbursementsView.length; i++){
+
+                // let row = document.createElement("tr");
+                // row.innerHTML = "<td>" + allReimbursementsView[i].reimbId + "</td>" 
+                //               + "<td>" + allReimbursementsView[i].amount + "</td>"
+                //               + "<td>" + allReimbursementsView[i].submitted + "</td>"
+                //               + "<td>" + allReimbursementsView[i].resolved + "</td>"
+                //               + "<td>" + allReimbursementsView[i].description + "</td>"
+                //               + "<td>" + allReimbursementsView[i].reciept + "</td>"
+                //               + "<td>" + allReimbursementsView[i].authorFirstName  + " " + allReimbursementsView[i].authorLastName + "</td>"
+                //               + "<td>" + allReimbursementsView[i].resolverFirstName + " " + allReimbursementsView[i].resolverLastName + "</td>"
+                //               + "<td>" + allReimbursementsView[i].statusName + "</td>"
+                //               + "<td>" + allReimbursementsView[i].typeName + "</td>";
+
+                // body.appendChild(row);
+            }
+
+
+
+            //document.getElementById('profile').appendChild(table);
+
+        }
+
+    }
+
 }
 
 function configureSubmitReimbursementView() {
@@ -651,10 +709,70 @@ function configureFinanceManagerHomeView() {
 function configureAllReimbursementsView() {
 
     console.log('in configureAllReimbursementsView()');
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'getAllReimbursements.read');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+
+            let allReimbursementsView =  JSON.parse(xhr.responseText);
+
+            let table = document.getElementById("load-all-reimbursements-table");
+
+            let head = document.createElement("thead");
+            let body = document.createElement("tbody");
+            
+            table.appendChild(head);
+
+            head.innerHTML = "<th>ID</th>"
+                           + "<th>amount</th>"
+                           + "<th>submitted</th>"
+                           + "<th>resolved</th>"
+                           + "<th>description</th>"
+                           + "<th>reciept</th>"
+                           + "<th>author</th>"
+                           + "<th>resolver</th>"
+                           + "<th>status</th>"
+                           + "<th>type</th>";
+            
+            table.appendChild(body);
+
+            for (let i = 0; i < allReimbursementsView.length; i++){
+
+                let row = document.createElement("tr");
+                row.innerHTML = "<td>" + allReimbursementsView[i].reimbId + "</td>" 
+                              + "<td>" + allReimbursementsView[i].amount + "</td>"
+                              + "<td>" + allReimbursementsView[i].submitted + "</td>"
+                              + "<td>" + allReimbursementsView[i].resolved + "</td>"
+                              + "<td>" + allReimbursementsView[i].description + "</td>"
+                              + "<td>" + allReimbursementsView[i].reciept + "</td>"
+                              + "<td>" + allReimbursementsView[i].authorFirstName  + " " + allReimbursementsView[i].authorLastName + "</td>"
+                              + "<td>" + allReimbursementsView[i].resolverFirstName + " " + allReimbursementsView[i].resolverLastName + "</td>"
+                              + "<td>" + allReimbursementsView[i].statusName + "</td>"
+                              + "<td>" + allReimbursementsView[i].typeName + "</td>";
+
+                body.appendChild(row);
+            }
+
+
+
+            //document.getElementById('profile').appendChild(table);
+
+        }
+
+    }
     
     
 
 }
+
+
+
 //#endregion
 
 

@@ -31,9 +31,9 @@ public class ErsReimbursementView {
 
     private String resolverLastName;
 
-    private String ersReimbursementStatusName;
+    private String statusName;
 
-    private String ersReimbursementTypeName;
+    private String typeName;
 
     public ErsReimbursementView(){
 
@@ -52,12 +52,12 @@ public class ErsReimbursementView {
 
         if(ersReimbursement.getResolver()!= null){
             this.resolverFirstName = ersReimbursement.getResolver().getFirstName();
-            this.resolverFirstName = ersReimbursement.getResolver().getLastName();
+            this.resolverLastName = ersReimbursement.getResolver().getLastName();
         }
 
         this.description = ersReimbursement.getDescription();
-        this.ersReimbursementStatusName = ersReimbursement.getDescription();
-        this.ersReimbursementTypeName = ersReimbursement.getErsReimbursementType().getReimbTypeName();
+        this.statusName = ersReimbursement.getErsReimbursementStatus().getReimbStatus();
+        this.typeName = ersReimbursement.getErsReimbursementType().getReimbTypeName();
 
         if(ersReimbursement.getReceipt()!=null){
             this.receipt = ersReimbursement.getReceipt();
@@ -152,20 +152,20 @@ public class ErsReimbursementView {
         this.resolverLastName = resolverLastName;
     }
 
-    public String getErsReimbursementStatusName() {
-        return ersReimbursementStatusName;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setErsReimbursementStatusName(String ersReimbursementStatusName) {
-        this.ersReimbursementStatusName = ersReimbursementStatusName;
+    public void setStatusName(String ersReimbursementStatusName) {
+        this.statusName = ersReimbursementStatusName;
     }
 
-    public String getErsReimbursementTypeName() {
-        return ersReimbursementTypeName;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setErsReimbursementTypeName(String ersReimbursementTypeName) {
-        this.ersReimbursementTypeName = ersReimbursementTypeName;
+    public void setTypeName(String ersReimbursementTypeName) {
+        this.typeName = ersReimbursementTypeName;
     }
 
     @Override
@@ -183,13 +183,13 @@ public class ErsReimbursementView {
                 Objects.equals(authorLastName, that.authorLastName) &&
                 Objects.equals(resolverFirstName, that.resolverFirstName) &&
                 Objects.equals(resolverLastName, that.resolverLastName) &&
-                Objects.equals(ersReimbursementStatusName, that.ersReimbursementStatusName) &&
-                Objects.equals(ersReimbursementTypeName, that.ersReimbursementTypeName);
+                Objects.equals(statusName, that.statusName) &&
+                Objects.equals(typeName, that.typeName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(reimbId, amount, submitted, resolved, description, receipt, authorFirstName, authorLastName, resolverFirstName, resolverLastName, ersReimbursementStatusName, ersReimbursementTypeName);
+        return Objects.hash(reimbId, amount, submitted, resolved, description, receipt, authorFirstName, authorLastName, resolverFirstName, resolverLastName, statusName, typeName);
     }
 
     @Override
@@ -205,8 +205,8 @@ public class ErsReimbursementView {
                 ", authorLastName='" + authorLastName + '\'' +
                 ", resolverFirstName='" + resolverFirstName + '\'' +
                 ", resolverLastName='" + resolverLastName + '\'' +
-                ", ersReimbursementStatusName='" + ersReimbursementStatusName + '\'' +
-                ", ersReimbursementTypeName='" + ersReimbursementTypeName + '\'' +
+                ", ersReimbursementStatusName='" + statusName + '\'' +
+                ", ersReimbursementTypeName='" + typeName + '\'' +
                 '}';
     }
 
