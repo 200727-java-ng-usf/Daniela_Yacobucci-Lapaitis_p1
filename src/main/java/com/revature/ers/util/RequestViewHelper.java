@@ -13,7 +13,8 @@ public class RequestViewHelper {
 
         switch (req.getRequestURI()) {
 
-            //nav bar views
+            //region nav-bars
+
             case "/loadLoggedOutNavbar.view":
             case "/ers/loadLoggedOutNavbar.view":
 
@@ -27,7 +28,10 @@ public class RequestViewHelper {
 
                 return "partials/navbarpartials/loggedinnavbar.html";
 
-            //app body views
+                //endregion
+
+            //region logged-out-views
+
             case "/login.view":
             case "/ers/login.view":
 
@@ -37,14 +41,9 @@ public class RequestViewHelper {
             case "/ers/register.view":
                 return "partials/register.html";
 
-            case "/home.view":
-            case "/ers/home.view":
+            //endregion
 
-                if (principal == null || principal.equals("")) {
-                    return "partials/login.html";
-                }
-
-                return "partials/home.html";
+            //region logged-in-for-all-views
 
             case "/profile.view":
             case "/ers/profile.view":
@@ -56,7 +55,10 @@ public class RequestViewHelper {
 
                 return "partials/profile.html";
 
-            //specific home views
+            //endregion
+
+            //region employee-views
+
             case "/employeeHome.view":
             case "/ers/employeeHome.view":
 
@@ -65,6 +67,28 @@ public class RequestViewHelper {
                 }
 
                 return "partials/employee/employeeHome.html";
+
+            case "/myReimbursements.view":
+            case "/ers/myReimbursements.view":
+
+                System.out.println("myReimbursements case");
+
+                return "partials/employee/myreimbursements.html";
+
+            case "/submitReimbursement.view":
+            case "/ers/submitReimbursement.view":
+
+                return "partials/employee/submitreimbursement.html";
+
+            case "/updateReimbursements.view":
+            case "/ers/updateReimbursements.view":
+
+                return "partials/employee/updatereimbursement.html";
+
+
+            //endregion
+
+            //region admin-views
 
             case "/adminHome.view":
             case "/ers/adminHome.view":
@@ -75,6 +99,10 @@ public class RequestViewHelper {
 
                 return "partials/admin/adminHome.html";
 
+            //endregion
+
+            //region finance-manager-views
+
             case "/financeManagerHome.view":
             case "/ers/financeManagerHome.view":
 
@@ -84,16 +112,11 @@ public class RequestViewHelper {
 
                 return "partials/financeManager/financeManagerHome.html";
 
-            case "/myReimbursements.view":
-            case "/ers/myReimbursements.view":
-
-
-                //return "partials/employee/myReimbursements.html";
-
-                return "partials/register.html";
+            //endregion
 
             default:
-                return "partials/employee/myReimbursements.html";
+
+                return "partials/badlogin.html";
 
 
         }

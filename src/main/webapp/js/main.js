@@ -1,6 +1,5 @@
 const APP_VIEW = document.getElementById('app-view');
 const NAV_BAR_CONTAINER = document.getElementById('navbar-container');
-const HOME_CONTAINER = document.getElementById('user-home-container');
 
 let currentPartialInAppView;
 
@@ -11,58 +10,19 @@ window.onload = function() {
 
 }
 
-//-------------------LOAD FULL HOMES------------------------
 
-function loadLoggedOutFullHome(){
-    loadLogin();
-    loadLoggedOutNavbar();
-}
+//#region load-navbars
 
-function loadLoggedInFullHome(){
-
-    //loadHome();
-    loadLoggedInNavbar();
-
-    let authUser = JSON.parse(localStorage.getItem('authUser'));;
-
-    console.log(authUser.username);
-    
-    console.log("authuser role: " + authUser.roleName);
-
-    if(authUser.roleName=='Admin'){
-        console.log('user is admin!');
-        loadAdminHomeView();
-
-    } else if(authUser.roleName=='Employee'){
-        console.log('user is employee!');
-        loadEmployeeHomeView();
-
-    } else if(authUser.roleName=='Fin Man'){
-        console.log('user is fin man!');
-        loadFinancialManagerHomeView();
-
-    } else {
-        console.log('user is not allowed!');
-
-    }
-
-
-}
-
-//----------------------LOAD VIEWS-------------------------
-
-
-
-function loadLoggedOutNavbar(){
+function loadLoggedOutNavbar() {
 
     console.log('in loadLoggedOutNavbar()');
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'loadLoggedOutNavbar.view',true);
+    xhr.open('GET', 'loadLoggedOutNavbar.view', true);
     xhr.send();
 
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
             NAV_BAR_CONTAINER.innerHTML = xhr.responseText;
             configureLoggedOutNavbar();
@@ -87,6 +47,10 @@ function loadLoggedInNavbar(){
         }
     }
 }
+
+//#endregion
+
+//#region load-logged-out-views
 
 function loadLogin() {
 
@@ -126,9 +90,16 @@ function loadRegister() {
 
 }
 
-function loadHome() {
 
-    console.log('in loadHome()');
+
+
+//#endregion
+
+//#region load-logged-in-for-all-views
+
+function loadProfile() {
+
+    console.log('in loadProfile()');
 
     if(!isUserLoggedIn()){
         return;
@@ -136,19 +107,63 @@ function loadHome() {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'home.view');
+    console.log(localStorage.getItem('authUser'));
+
+    xhr.open('GET',  'profile.view');
     xhr.send();
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             APP_VIEW.innerHTML = xhr.responseText;
-            configureHomeView();
+            configureProfileView();
         }
     }
 
 }
+//#endregion
 
-//--------------- Specific home loads----------------------------
+//#region load-full-homes
+
+
+
+function loadLoggedOutFullHome(){
+    loadLogin();
+    loadLoggedOutNavbar();
+}
+
+function loadLoggedInFullHome(){
+
+    //loadHome();
+    loadLoggedInNavbar();
+
+    let authUser = JSON.parse(localStorage.getItem('authUser'));;
+
+    console.log(authUser.username);
+    
+    console.log("authuser role: " + authUser.roleName);
+
+    if(authUser.roleName=='Admin'){
+        console.log('user is admin!');
+        loadAdminHomeView();
+
+    } else if(authUser.roleName=='Employee'){
+        console.log('user is employee!');
+        loadEmployeeHomeView();
+
+    } else if(authUser.roleName=='Fin mngr'){
+        console.log('user is fin man!');
+        loadFinancialManagerHomeView();
+
+    } else {
+        console.log('user is not allowed!');
+
+    }
+
+
+}
+//#endregion
+
+//#region load-employee-views
 
 function loadEmployeeHomeView(){
 
@@ -174,6 +189,76 @@ function loadEmployeeHomeView(){
 
 }
 
+function loadMyReimbursements() {
+
+    console.log('in loadMyReimbursements()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'myReimbursements.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureMyReimbursementsView();
+        }
+    }
+
+}
+
+function loadSubmitReimbursement() {
+
+    console.log('in loadSubmitReimbursement()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'submitReimbursement.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureSubmitReimbursementView();
+        }
+    }
+
+}
+
+function loadUpdateReimbursements() {
+
+    console.log('in loadUpdateReimbursements()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'updateReimbursements.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureUpdateReimbursementsView();
+        }
+    }
+
+}
+
+//#endregion
+
+//#region load-admin-views
+
 function loadAdminHomeView(){
 
     console.log('in loadAdminHomeView()');
@@ -197,6 +282,53 @@ function loadAdminHomeView(){
     }
 
 }
+
+function loadAddNewUser(){
+
+    console.log('in loadAddNewUser()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', "addNewUsers.view")
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureAddNewUser();
+        }
+    }
+
+}
+
+function loadViewUsers(){
+    console.log('in loadViewUsers()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'loadViewUsers.view');
+    xhr.send;
+
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureViewUsers();
+        }
+    }
+
+}
+
+//#endregion
+
+//#region load-finance-manager-views
 
 function loadFinanceManagerHomeView(){
 
@@ -222,11 +354,9 @@ function loadFinanceManagerHomeView(){
 
 }
 
-//---------------------------------------------------------------
+function loadAllReimbursements(){
 
-function loadMyReimbursements() {
-
-    console.log('in loadMyReimbursements()');
+    console.log('in loadAllReimbursements()');
 
     if(!isUserLoggedIn()){
         return;
@@ -234,43 +364,25 @@ function loadMyReimbursements() {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'myReimbursements.view');
+    xhr.open('GET', 'allReimbursements.view');
     xhr.send();
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             APP_VIEW.innerHTML = xhr.responseText;
-            configureMyReimbursementsView();
+            configureAllReimbursementsView();
+
         }
+
     }
 
 }
 
-function loadProfile() {
+//#endregion
 
-    console.log('in loadProfile()');
 
-    if(!isUserLoggedIn()){
-        return;
-    }
 
-    let xhr = new XMLHttpRequest();
-
-    console.log(localStorage.getItem('authUser'));
-
-    xhr.open('GET',  'profile.view');
-    xhr.send();
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            APP_VIEW.innerHTML = xhr.responseText;
-            configureProfileView();
-        }
-    }
-
-}
-
-//----------------CONFIGURE VIEWS--------------------
+//#region configure-navbars
 
 function configureLoggedOutNavbar(){
     document.getElementById('toLogin').addEventListener('click', loadLogin);
@@ -289,7 +401,7 @@ function configureLoggedInNavbar(){
         console.log('user is employee!');
         document.getElementById('toHome').addEventListener('click', loadEmployeeHomeView);
 
-    } else if(authUser.roleName=='Fin Man'){
+    } else if(authUser.roleName=='Fin mngr'){
         console.log('user is fin man!');
         document.getElementById('toHome').addEventListener('click', loadFinanceManagerHomeView);
 
@@ -302,6 +414,10 @@ function configureLoggedInNavbar(){
     document.getElementById('toLogout').addEventListener('click', logout);
 
 }
+//#endregion
+
+//#region configure-logged-out-views
+
 
 function configureLoginView() {
 
@@ -325,79 +441,11 @@ function configureRegisterView() {
     document.getElementById('register').setAttribute('disabled', true);
     document.getElementById('reg-button-container').addEventListener('mouseover', validateRegisterForm);
     document.getElementById('register').addEventListener('click', register);
-
 }
 
-function configureHomeView() {
+//#endregion
 
-    console.log('in configureHomeView()');
-    let authUser = JSON.parse(localStorage.getItem('authUser'));
-
-    document.getElementById('loggedInEmployeeUsername').innerText = authUser.username;
-
-}
-
-//----------------------------------
-function configureAdminHomeView() {
-
-    console.log('in configureHomeView()');
-    let authUser = JSON.parse(localStorage.getItem('authUser'));
-
-    document.getElementById('loggedInAdminUsername').innerText = authUser.username;
-
-}
-
-function configureEmployeeHomeView() {
-
-    console.log('in configureHomeView()');
-    let authUser = JSON.parse(localStorage.getItem('authUser'));
-
-    document.getElementById('loggedInEmployeeUsername').innerText = authUser.username;
-
-}
-
-function configureManagerHomeView() {
-
-    console.log('in configureHomeView()');
-    let authUser = JSON.parse(localStorage.getItem('authUser'));
-
-    document.getElementById('loggedInFinanceManagerUsername').innerText = authUser.username;
-
-}
-
-//--------------- Specific home views----------------------------
-
-function configureEmployeeHomeView(){
-
-    console.log('in configureEmployeeHomeView()');
-
-    let authUser = JSON.parse(localStorage.getItem('authUser'));
-
-    document.getElementById('loggedInEmployeeUsername').innerText = authUser.username;
-
-    document.getElementById('viewMyReimbursements').addEventListener('click', loadMyReimbursements);
-
-}
-
-//---------------------------------------------------------------
-
-function configureMyReimbursementsView() {
-
-    console.log('in configureMyReimbursementsView()');
-
-    //let authUser = JSON.parse(localStorage.getItem('authUser'));
-    //document.getElementById('loggedInUsername').innerText = authUser.username;
-
-}
-
-function configureAllReimbursementsView() {
-
-    console.log('in configureAllReimbursementsView()');
-
-    //let authUser = JSON.parse(localStorage.getItem('authUser'));
-    //document.getElementById('loggedInUsername').innerText = authUser.username;
-
-}
+//#region configure-logged-in-for-all-views
 
 function configureProfileView() {
 
@@ -421,8 +469,6 @@ function configureProfileView() {
             //console.log("userInfoViewRole: " + userInfoView.role);
             //let userRole = JSON.parse(userInfoView.role);
 
-
-            
             let table = document.getElementById("profile-table");
             //userInfoView.firstName
             let head = document.createElement("thead");
@@ -471,7 +517,91 @@ function configureProfileView() {
 }
 
 
+//#endregion
 
+//#region configure-employee-views
+
+
+function configureEmployeeHomeView(){
+
+    console.log('in configureEmployeeHomeView()');
+
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    document.getElementById('loggedInEmployeeUsername').innerText = authUser.username;
+
+    document.getElementById('viewMyReimbursements').addEventListener('click', loadMyReimbursements);
+
+    document.getElementById('submitReimbursement').addEventListener('click', loadSubmitReimbursement);
+
+}
+
+function configureMyReimbursementsView() {
+
+    console.log('in configureMyReimbursementsView()');
+
+}
+
+function configureSubmitReimbursementView() {
+
+    console.log('in configureSubmitReimbursementView()')
+}
+
+
+function configureUpdateReimbursementsView() {
+
+    console.log('in configureReimbursementView()');
+
+}
+
+    //let authUser = JSON.parse(localStorage.getItem('authUser'));
+    //document.getElementById('loggedInUsername').innerText = authUser.username;
+
+//#endregion
+
+//#region configure-admin-views
+
+function configureAdminHomeView() {
+
+    console.log('in configureHomeView()');
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    document.getElementById('loggedInAdminUsername').innerText = authUser.username;
+    document.getElementById('add-new-user').addEventListener('click', loadAddNewUser);
+    document.getElementById('view-users').addEventListener('click', loadViewUsers);
+
+
+}
+
+//#endregion
+
+//#region configure-finance-manager-views
+
+function configureManagerHomeView() {
+
+    console.log('in configureHomeView()');
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    document.getElementById('loggedInFinanceManagerUsername').innerText = authUser.username;
+
+    document.getElementById('view-all-reimbursements').addEventListener('click', loadAllReimbursements);
+    document.getElementById('submitReimbursement').addEventListener('click', loadSubmitReimbursement);
+
+}
+
+function configureAllReimbursementsView() {
+
+    console.log('in configureAllReimbursementsView()');
+
+    //let authUser = JSON.parse(localStorage.getItem('authUser'));
+    //document.getElementById('loggedInUsername').innerText = authUser.username;
+
+}
+//#endregion
+
+
+
+//#region operations
 //------------------OPERATIONS-----------------------
 
 function login() {
@@ -660,8 +790,9 @@ function isUserLoggedIn(){
     return true;
 }
 
+//#endregion
 
-//---------------------FORM VALIDATION-------------------------
+//#region form-validation
 
 function validateLoginForm() {
 
@@ -706,3 +837,5 @@ function validateRegisterForm() {
         document.getElementById('reg-message').setAttribute('hidden', true);
     }
 }
+
+//#endregion
