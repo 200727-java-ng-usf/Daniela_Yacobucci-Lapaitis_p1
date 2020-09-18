@@ -11,6 +11,8 @@ public class RequestViewHelper {
 
         String principal = (String) req.getSession().getAttribute("principal");
 
+        System.out.println("in helper");
+
         switch (req.getRequestURI()) {
 
             //region nav-bars
@@ -64,6 +66,7 @@ public class RequestViewHelper {
 
                 if (principal == null || principal.equals("")) {
                     return "partials/employee/partialNotAllowed.html";
+                    //TODO change file name to page not allowed, need to change tomcat issue though
                 }
 
                 return "partials/employee/employeeHome.html";
@@ -99,6 +102,18 @@ public class RequestViewHelper {
 
                 return "partials/admin/adminHome.html";
 
+            case "/addNewUsers.view":
+            case "/ers/addNewUsers.view":
+                //TODO check for user logged in and role
+                return "partials/admin/add-new-user.html";
+
+            case "/loadViewUsers.view":
+            case "/ers/loadViewUsers.view":
+
+                System.out.println("in correct case");
+
+                return "partials/admin/view-users.html";
+
             //endregion
 
             //region finance-manager-views
@@ -112,12 +127,17 @@ public class RequestViewHelper {
 
                 return "partials/financeManager/financeManagerHome.html";
 
+            case "/allReimbursements.view":
+            case "/ers/allReimbursements.view":
+
+                return "partials/financeManager/load-all-reimbursements.html";
+
             //endregion
 
             default:
 
                 return "partials/badlogin.html";
-
+                //TODO change file name to page not found
 
         }
 

@@ -58,7 +58,8 @@ function loadLogin() {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'login.view', true); // third parameter (default true) indicates we want to make this req async
+    // third parameter (optional since it defaults to true) indicates we want to make this req async
+    xhr.open('GET', 'login.view', true);
 
 
     xhr.send();
@@ -78,7 +79,7 @@ function loadRegister() {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'register.view'); // third parameter of this method is optional (defaults to true)
+    xhr.open('GET', 'register.view');
     xhr.send();
 
     xhr.onreadystatechange = function() {
@@ -124,8 +125,6 @@ function loadProfile() {
 
 //#region load-full-homes
 
-
-
 function loadLoggedOutFullHome(){
     loadLogin();
     loadLoggedOutNavbar();
@@ -133,7 +132,6 @@ function loadLoggedOutFullHome(){
 
 function loadLoggedInFullHome(){
 
-    //loadHome();
     loadLoggedInNavbar();
 
     let authUser = JSON.parse(localStorage.getItem('authUser'));;
@@ -152,7 +150,7 @@ function loadLoggedInFullHome(){
 
     } else if(authUser.roleName=='Fin mngr'){
         console.log('user is fin man!');
-        loadFinancialManagerHomeView();
+        loadFinanceManagerHomeView();
 
     } else {
         console.log('user is not allowed!');
@@ -293,13 +291,13 @@ function loadAddNewUser(){
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', "addNewUsers.view")
+    xhr.open('GET', 'addNewUsers.view');
     xhr.send();
 
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
             APP_VIEW.innerHTML = xhr.responseText;
-            configureAddNewUser();
+            configureAddNewUserView();
         }
     }
 
@@ -315,12 +313,16 @@ function loadViewUsers(){
     let xhr = new XMLHttpRequest();
 
     xhr.open('GET', 'loadViewUsers.view');
-    xhr.send;
+
+    xhr.send();
+
+    console.log('loadViewUsers outside onreadystatechange');
 
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
             APP_VIEW.innerHTML = xhr.responseText;
-            configureViewUsers();
+            console.log('loadViewUsers inside onreadystatechange');
+            configureViewUsersView();
         }
     }
 
@@ -354,7 +356,7 @@ function loadFinanceManagerHomeView(){
 
 }
 
-function loadAllReimbursements(){
+function loadAllReimbursementsView(){
 
     console.log('in loadAllReimbursements()');
 
@@ -572,20 +574,31 @@ function configureAdminHomeView() {
 
 
 }
+function configureAddNewUserView(){
+
+    console.log('in configureAddNewUserView()');
+
+}
+
+function configureViewUsersView(){
+
+    console.log('in configureViewUsersView()');
+
+}
+
 
 //#endregion
 
 //#region configure-finance-manager-views
 
-function configureManagerHomeView() {
+function configureFinanceManagerHomeView() {
 
     console.log('in configureHomeView()');
     let authUser = JSON.parse(localStorage.getItem('authUser'));
 
     document.getElementById('loggedInFinanceManagerUsername').innerText = authUser.username;
 
-    document.getElementById('view-all-reimbursements').addEventListener('click', loadAllReimbursements);
-    document.getElementById('submitReimbursement').addEventListener('click', loadSubmitReimbursement);
+    document.getElementById('view-all-reimbursements').addEventListener('click', loadAllReimbursementsView);
 
 }
 
