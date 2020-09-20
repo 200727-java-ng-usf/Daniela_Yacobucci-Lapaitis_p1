@@ -1,5 +1,7 @@
 package com.revature.ers.dtos;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.models.ErsReimbursement;
 import com.revature.ers.models.ErsReimbursementStatus;
 import com.revature.ers.models.ErsReimbursementType;
@@ -27,16 +29,28 @@ public class ErsReimbursementView {
 
     private String authorLastName;
 
+    private String authorUsername;
+
     private String resolverFirstName;
 
     private String resolverLastName;
+
+    private String resolverUsername;
 
     private String statusName;
 
     private String typeName;
 
+
     public ErsReimbursementView(){
 
+    }
+
+    public ErsReimbursementView(double amount, String description, String authorUsername, String typeName) {
+        this.amount = amount;
+        this.description = description;
+        this.authorUsername = authorUsername;
+        this.typeName = typeName;
     }
 
     public ErsReimbursementView (ErsReimbursement ersReimbursement){
@@ -47,12 +61,14 @@ public class ErsReimbursementView {
 
             this.authorFirstName = ersReimbursement.getAuthor().getFirstName();
             this.authorLastName = ersReimbursement.getAuthor().getLastName();
+            this.authorUsername = ersReimbursement.getAuthor().getUsername();
 
         }
 
         if(ersReimbursement.getResolver()!= null){
             this.resolverFirstName = ersReimbursement.getResolver().getFirstName();
             this.resolverLastName = ersReimbursement.getResolver().getLastName();
+            this.resolverUsername = ersReimbursement.getResolver().getUsername();
         }
 
         this.description = ersReimbursement.getDescription();
@@ -70,6 +86,7 @@ public class ErsReimbursementView {
         }
 
         this.submitted = ersReimbursement.getSubmitted();
+
     }
 
     public int getReimbId() {
@@ -168,28 +185,26 @@ public class ErsReimbursementView {
         this.typeName = ersReimbursementTypeName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ErsReimbursementView that = (ErsReimbursementView) o;
-        return reimbId == that.reimbId &&
-                Double.compare(that.amount, amount) == 0 &&
-                Objects.equals(submitted, that.submitted) &&
-                Objects.equals(resolved, that.resolved) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(receipt, that.receipt) &&
-                Objects.equals(authorFirstName, that.authorFirstName) &&
-                Objects.equals(authorLastName, that.authorLastName) &&
-                Objects.equals(resolverFirstName, that.resolverFirstName) &&
-                Objects.equals(resolverLastName, that.resolverLastName) &&
-                Objects.equals(statusName, that.statusName) &&
-                Objects.equals(typeName, that.typeName);
+    public String getAuthorUsername() {
+        return authorUsername;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(reimbId, amount, submitted, resolved, description, receipt, authorFirstName, authorLastName, resolverFirstName, resolverLastName, statusName, typeName);
+    public void setAuthorUsername(String authorUsername) {
+        this.authorUsername = authorUsername;
+    }
+
+    public String getResolverUsername() {
+        return resolverUsername;
+    }
+
+    public void setResolverUsername(String resolverUsername) {
+        this.resolverUsername = resolverUsername;
+    }
+
+    public static ErsReimbursementView JSONtoObj(String ersReimbursementViewJSON) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ErsReimbursementView ersReimbursementView = mapper.readValue(ersReimbursementViewJSON, ErsReimbursementView.class);
+        return ersReimbursementView;
     }
 
     @Override
@@ -203,11 +218,12 @@ public class ErsReimbursementView {
                 ", receipt='" + receipt + '\'' +
                 ", authorFirstName='" + authorFirstName + '\'' +
                 ", authorLastName='" + authorLastName + '\'' +
+                ", authorUsername='" + authorUsername + '\'' +
                 ", resolverFirstName='" + resolverFirstName + '\'' +
                 ", resolverLastName='" + resolverLastName + '\'' +
-                ", ersReimbursementStatusName='" + statusName + '\'' +
-                ", ersReimbursementTypeName='" + typeName + '\'' +
+                ", resolverUsername='" + resolverUsername + '\'' +
+                ", statusName='" + statusName + '\'' +
+                ", typeName='" + typeName + '\'' +
                 '}';
     }
-
 }

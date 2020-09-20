@@ -34,6 +34,56 @@ public class ErsUser {
     @JoinColumn(name="user_role_id")
     private ErsUserRole ersUserRole;
 
+    @Column(name="status")
+    private boolean status;
+
+    //empty constructor
+    public ErsUser(){
+
+    }
+
+    //no id, no status, no password
+    public ErsUser(String username, String firstName, String lastName, String email, ErsUserRole ersUserRole) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.ersUserRole = ersUserRole;
+    }
+
+    //no id, no password
+    public ErsUser(String username, String firstName, String lastName, String email, ErsUserRole ersUserRole, boolean status) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.ersUserRole = ersUserRole;
+        this.status = status;
+    }
+
+    // no id
+    public ErsUser(String username, String password, String firstName, String lastName, String email, ErsUserRole ersUserRole, boolean status) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.ersUserRole = ersUserRole;
+        this.status = status;
+    }
+
+    // all
+    public ErsUser(int ersUserId, String username, String password, String firstName, String lastName, String email, ErsUserRole ersUserRole, boolean status) {
+        this.ersUserId = ersUserId;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.ersUserRole = ersUserRole;
+        this.status = status;
+    }
+
     public int getErsUserId() {
         return ersUserId;
     }
@@ -86,6 +136,14 @@ public class ErsUser {
         return ersUserRole;
     }
 
+    public boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     public void setErsUserRole(ErsUserRole ersUserRole) {
         this.ersUserRole = ersUserRole;
     }
@@ -100,6 +158,7 @@ public class ErsUser {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", ersUserRole=" + ersUserRole +
+                ", status=" + status +
                 '}';
     }
 

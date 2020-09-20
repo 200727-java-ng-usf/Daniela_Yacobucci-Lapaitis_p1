@@ -1,5 +1,9 @@
 package com.revature.ers.models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.ers.dtos.ErsReimbursementView;
+
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -50,11 +54,25 @@ public class ErsReimbursement {
     @JoinColumn(name="reimb_type_id")
     private ErsReimbursementType ersReimbursementType;
 
-    public ErsReimbursement() {
-
+    //no id, no resolved, no receipt, no resolver
+    public ErsReimbursement(double amount, String description, ErsUser author, ErsReimbursementType ersReimbursementType) {
+        this.amount = amount;
+        this.description = description;
+        this.author = author;
+        this.ersReimbursementType = ersReimbursementType;
     }
 
-    //without id
+    //no id, no resolved, no receipt, no resolver
+    public ErsReimbursement(double amount, LocalTime submitted, String description, ErsUser author, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
+        this.amount = amount;
+        this.submitted = submitted;
+        this.description = description;
+        this.author = author;
+        this.ersReimbursementStatus = ersReimbursementStatus;
+        this.ersReimbursementType = ersReimbursementType;
+    }
+
+    //no id
     public ErsReimbursement(double amount, LocalTime submitted, LocalTime resolved, String description, String receipt, ErsUser author, ErsUser resolver, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
         this.amount = amount;
         this.submitted = submitted;
@@ -67,6 +85,7 @@ public class ErsReimbursement {
         this.ersReimbursementType = ersReimbursementType;
     }
 
+    //all
     public ErsReimbursement(int reimbId, double amount, LocalTime submitted, LocalTime resolved, String description, String receipt, ErsUser author, ErsUser resolver, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
         this.reimbId = reimbId;
         this.amount = amount;
@@ -196,5 +215,11 @@ public class ErsReimbursement {
                 ", ersReimbursementStatus=" + ersReimbursementStatus +
                 ", ersReimbursementType=" + ersReimbursementType +
                 '}';
+    }
+
+    public static ErsReimbursement JSONtoObj(String ersReimbursementJSON) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        ErsReimbursement ersReimbursement = mapper.readValue(ersReimbursementJSON, ErsReimbursement.class);
+        return ersReimbursement;
     }
 }

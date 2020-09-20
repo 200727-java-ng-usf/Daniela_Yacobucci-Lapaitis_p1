@@ -39,4 +39,22 @@ public class ErsReimbursementRepository {
 
         return _allReimbursements;
     }
+
+    public void save(ErsReimbursement ersReimbursement) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try {
+
+            Transaction tx = session.beginTransaction();
+            session.save(ersReimbursement);
+            tx.commit();
+
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+
+    }
+
 }

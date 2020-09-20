@@ -34,8 +34,7 @@ public class CRUDDeleteServlet extends HttpServlet {
         System.out.println("In the following servlet " + this.getClass());
         System.out.println("This is the request URI: " + req.getRequestURI());
         new CRUDDeleteRequestHelper().process(req);
-        resp.setStatus(201);
-
+        resp.setStatus(200);
 
     }
 

@@ -19,8 +19,6 @@ public class ErsUserRepository {
     static Transaction tx = null;
     static Session session;
 
-    //sessionFactory
-
     public Optional<List<ErsUser>>  getAllErsUsers(){
 
         session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
@@ -222,6 +220,37 @@ public class ErsUserRepository {
             e.printStackTrace();
         }
 
+        return (_user);
+    }
+
+    public Optional<ErsUser> findUserById(int id){
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        Optional<ErsUser> _user = Optional.empty();
+
+        try{
+
+            tx = session.beginTransaction();
+
+            cb = session.getCriteriaBuilder();
+
+            CriteriaQuery<ErsUser> cq = cb.createQuery(ErsUser.class);
+            Root<ErsUser> root = cq.from(ErsUser.class);
+            cq.select(root);
+
+            cq.where(cb.equal(root.get("ersUserId"), id));
+
+            Query query = session.createQuery(cq);
+
+            _user = (Optional<ErsUser>) query.getResultList().stream().findFirst();
+
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        }
 
         return (_user);
     }
@@ -254,6 +283,40 @@ public class ErsUserRepository {
         }
     }
 
+// kept this here for reference because it works
+//    public void changeRoleToInactiveById (int id) {
+//
+//        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+//
+//        try{
+//
+//            tx = session.beginTransaction();
+//
+//            cb = session.getCriteriaBuilder();
+//
+//            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+//            Root<ErsUser> root = cu.from(ErsUser.class);
+//
+//            cu.set( "firstName", "Delospalotes");
+//
+//
+//            cu.where(cb.equal(root.get("ersUserId"), id));
+//
+//            Query query = session.createQuery(cu);
+//            query.executeUpdate();
+//            tx.commit();//DO NOT FORGET!!!!!!         //TODO DONT FORGET
+//
+//            //TODO print queries
+//
+//
+//
+//        } catch (Exception e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//
+//        }
+//    }
+
 
     public void changeRoleToInactiveById (int id) {
 
@@ -268,12 +331,13 @@ public class ErsUserRepository {
             CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
             Root<ErsUser> root = cu.from(ErsUser.class);
 
-            cu.set( "firstName", "Delospalotes");
+            cu.set( "ersUserRole", new ErsUserRole(4, "Inactive"));
 
-            cu.where(cb.equal(root.get("id"), id));
+            cu.where(cb.equal(root.get("ersUserId"), id));
 
             Query query = session.createQuery(cu);
             query.executeUpdate();
+            tx.commit();//dont forget!!!
 
 
         } catch (Exception e) {
@@ -283,7 +347,166 @@ public class ErsUserRepository {
         }
     }
 
+
+    public void changeFirstNameById (int id, String firstName) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+            tx = session.beginTransaction();
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set( "firstName", firstName).where(cb.equal(root.get("ersUserId"), id));
+
+            session.createQuery(cu).executeUpdate();
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+
+        }
+    }
+
+    public void changeLastNameById (int id, String lastName) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+            tx = session.beginTransaction();
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set( "lastName", lastName).where(cb.equal(root.get("ersUserId"), id));
+
+            session.createQuery(cu).executeUpdate();
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+
+        }
+    }
+
+    public void changeUsernameById (int id, String username) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+            tx = session.beginTransaction();
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set( "username", username).where(cb.equal(root.get("ersUserId"), id));
+
+            session.createQuery(cu).executeUpdate();
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+
+        }
+    }
+
+    public void changeEmailById (int id, String email) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+            tx = session.beginTransaction();
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set( "email", email).where(cb.equal(root.get("ersUserId"), id));
+
+            session.createQuery(cu).executeUpdate();
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+
+        }
+    }
+
+    public void changeRoleById (int id, String role) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+            tx = session.beginTransaction();
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set( "ersUserRole", role).where(cb.equal(root.get("ersUserId"), id));
+
+            session.createQuery(cu).executeUpdate();
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public void changeStatusById (int id, boolean status) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try{
+            tx = session.beginTransaction();
+            cb = session.getCriteriaBuilder();
+
+            CriteriaUpdate<ErsUser> cu = cb.createCriteriaUpdate(ErsUser.class);
+            Root<ErsUser> root = cu.from(ErsUser.class);
+
+            cu.set( "status", status).where(cb.equal(root.get("ersUserId"), id));
+
+            session.createQuery(cu).executeUpdate();
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public void save(ErsUser newUser) {
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        try {
+
+            Transaction tx = session.beginTransaction();
+            session.save(newUser);
+            tx.commit();
+
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        }
+
+    }
+
 }
+
 /*
 
 Session session = sessionFactory.getCurrentSession();

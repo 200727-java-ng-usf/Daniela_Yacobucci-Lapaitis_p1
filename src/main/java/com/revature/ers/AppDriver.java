@@ -1,10 +1,15 @@
 package com.revature.ers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.ers.models.ErsReimbursement;
 import com.revature.ers.repo.ErsReimbursementRepository;
 import com.revature.ers.repo.ErsUserRepository;
 import com.revature.ers.services.ErsReimbursementService;
 import com.revature.ers.services.ErsUserService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AppDriver {
 
@@ -12,19 +17,30 @@ public class AppDriver {
 
     public static void main(String[] args) {
 
+    String JSONTest = "{ \"username\": \"meghvu\", \"password\": \"clowntime\" }";
 
+        try {
+            Map<String, Object> response = new ObjectMapper().readValue(JSONTest, HashMap.class);
+            String username = response.get("username").toString();
+            System.out.println(username);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
 //        ErsUserService userService = new ErsUserService();
 //
         //ErsUserRepository userRepo = new ErsUserRepository();
 
-        ErsReimbursementService rembService = new ErsReimbursementService();
+        //ErsReimbursementService rembService = new ErsReimbursementService();
 
         //ErsReimbursementRepository reimbRepo = new ErsReimbursementRepository();
 
         //reimbRepo.getAllReimbursements();
 
-        System.out.println(rembService.getAllReimbursements());
+        //System.out.println(rembService.getAllReimbursements());
+
+        //userRepo.changeRoleToInactiveById(788);
+
 //
 //        System.out.println(userRepo.findUserByCredentials("meghvu","clowntime").get());
         // System.out.println(userService.authenticate("meghvu","clowntime").get());

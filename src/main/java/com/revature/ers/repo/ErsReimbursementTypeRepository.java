@@ -1,17 +1,29 @@
 package com.revature.ers.repo;
 
 import com.revature.ers.models.ErsReimbursementType;
+import com.revature.ers.models.ErsUser;
 import com.revature.ers.util.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.Optional;
 
 public class ErsReimbursementTypeRepository {
 
+
+    static CriteriaBuilder cb;
+    static Transaction tx = null;
+    static Session session;
+
+
     public static void printErsReimbursementTypes(){
 
-        Session session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
         Transaction tx = null;
 
         try{
@@ -30,4 +42,38 @@ public class ErsReimbursementTypeRepository {
             session.close();
         }
     }
+
+    public Optional<ErsReimbursementType> getErsReimbursementTypeByName(String ersReimbursementName){
+
+        session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
+
+        Optional<ErsReimbursementType> _ersReimbursementType = Optional.empty();
+
+        try{
+
+            tx = session.beginTransaction();
+
+            cb = session.getCriteriaBuilder();
+
+            CriteriaQuery<ErsReimbursementType> cq = cb.createQuery(ErsReimbursementType.class);
+            Root<ErsReimbursementType> root = cq.from(ErsReimbursementType.class);
+            cq.select(root);
+
+            cq.where(cb.equal(root.get("reimbTypeName"), ersReimbursementName));
+
+            Query query = session.createQuery(cq);
+
+            _ersReimbursementType = (Optional<ErsReimbursementType>) query.getResultList().stream().findFirst();
+
+            tx.commit();
+
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        }
+
+        return (_ersReimbursementType);
+    }
+
+
 }

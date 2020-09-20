@@ -12,6 +12,7 @@ public class UserView {
     private String lastName;
     private String email;
     private String roleName;
+    private boolean status;
 
     public UserView(ErsUser ersUser) {
         this.id = ersUser.getErsUserId();
@@ -20,6 +21,7 @@ public class UserView {
         this.lastName = ersUser.getLastName();
         this.email = ersUser.getEmail();
         this.roleName = ersUser.getErsUserRole().getRoleName();
+        this.status = ersUser.getStatus();
     }
 
     public int getId() {
@@ -70,22 +72,12 @@ public class UserView {
         this.roleName = roleName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserView userView = (UserView) o;
-        return id == userView.id &&
-                Objects.equals(username, userView.username) &&
-                Objects.equals(firstName, userView.firstName) &&
-                Objects.equals(lastName, userView.lastName) &&
-                Objects.equals(email, userView.email) &&
-                Objects.equals(roleName, userView.roleName);
+    public boolean getStatus() {
+        return status;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username, firstName, lastName, email, roleName);
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     @Override
@@ -97,6 +89,7 @@ public class UserView {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", roleName='" + roleName + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

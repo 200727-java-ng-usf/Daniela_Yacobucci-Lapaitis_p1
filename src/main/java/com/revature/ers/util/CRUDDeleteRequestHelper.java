@@ -21,11 +21,15 @@ public class CRUDDeleteRequestHelper {
         System.out.println("[CRUDDeleteRequestHelper] req.getRequestURI() " + req.getRequestURI());
         //String ersUserJSON = mapper.readValue(req.getInputStream(), String.class);
         //ErsUser ersUser = ErsUser.JSONtoObj(ersUserJSON);
-        httpSoftDeleteUser(req);
+
 
         switch(req.getRequestURI()){
             case "/user.delete":
             case "/ers/user.delete":
+
+                httpSoftDeleteUser(req);
+
+                break;
 
         }
 

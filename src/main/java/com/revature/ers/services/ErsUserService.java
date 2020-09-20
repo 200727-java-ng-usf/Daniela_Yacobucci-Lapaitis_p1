@@ -50,6 +50,11 @@ public class ErsUserService {
     }
 
     public ErsUser findUserByUsername(String username){
+
+        if (username == null || username.trim().equals("")) {
+            throw new InvalidRequestException("Invalid username provided!");
+        }
+
         return ersUserRepo.findUserByUsername(username)
                 .orElseThrow(AuthenticationException::new);
     }
@@ -67,7 +72,17 @@ public class ErsUserService {
 
     public void softDeleteUserById(int id){
 
+        if (id == 0 || !ersUserRepo.findUserById(id).isPresent()) {
+            throw new InvalidRequestException("Invalid id provided!");
+        }
+
         ersUserRepo.changeRoleToInactiveById(id);
+
+    }
+
+    public void createUser(ErsUser ersUser){
+
+        ersUserRepo.save(ersUser);
 
     }
 
