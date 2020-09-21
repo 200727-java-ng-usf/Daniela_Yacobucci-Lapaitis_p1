@@ -54,6 +54,11 @@ public class ErsReimbursement {
     @JoinColumn(name="reimb_type_id")
     private ErsReimbursementType ersReimbursementType;
 
+    //default constructor needed to do queries
+    public ErsReimbursement(){
+
+    }
+
     //no id, no resolved, no receipt, no resolver
     public ErsReimbursement(double amount, String description, ErsUser author, ErsReimbursementType ersReimbursementType) {
         this.amount = amount;

@@ -7,6 +7,8 @@ import com.revature.ers.services.ErsReimbursementService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CRUDUpdateRequestHelper {
 
@@ -26,13 +28,9 @@ public class CRUDUpdateRequestHelper {
             case "/ers/user.updateUsername":
                 httpUpdateErsUserUsername(req);
                 break;
-            case "/reimbursement.approve":
-            case "/ers/reimbursement.approve":
-                httpDenyReimbursement(req);
-                break;
-            case "/reimbursement.deny":
-            case "/ers/reimbursement.deny":
-                httpApproveReimbursement(req);
+            case "/reimbursement.updateStatus":
+            case "/ers/reimbursement.updateStatus":
+                httpDenyReimbursementById(req);
                 break;
 
         }
@@ -51,11 +49,27 @@ public class CRUDUpdateRequestHelper {
 
     }
 
-    public void httpDenyReimbursement(HttpServletRequest req){
+    public void httpDenyReimbursementById(HttpServletRequest req){
+
+        try {
+            String reimbursementIdJSON = mapper.readValue(req.getInputStream(), String.class);
+            Map<String, Object> response = new ObjectMapper().readValue(reimbursementIdJSON, HashMap.class);
+            String id = response.get("id").toString();
+
+
+            //ersReimbursementService.setReimbursementStatusToDeniedById(Integer.parseInt(id));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException nfe){
+            nfe.printStackTrace();
+        }
+            //TODO js approve or deny reimb, handle it staying pending
+        //TODO make error responses
 
     }
 
-    public void httpApproveReimbursement(HttpServletRequest req){
+    public void httpApproveReimbursementById(HttpServletRequest req){
 
     }
 

@@ -4,7 +4,7 @@ public class NoValuesFoundException extends RuntimeException {
 
     public NoValuesFoundException(){
 
-        super("No values found");
+        super("No values found with the specified criteria");
 
     }
 

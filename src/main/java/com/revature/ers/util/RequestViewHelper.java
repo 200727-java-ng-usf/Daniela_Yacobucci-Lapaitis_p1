@@ -132,6 +132,12 @@ public class RequestViewHelper {
 
                 return "partials/financeManager/load-all-reimbursements.html";
 
+            case "/approveOrDenyReimbursements.view":
+            case "/ers/approveOrDenyReimbursements.view":
+
+                return "partials/financeManager/approve-or-deny-reimbursements.html";
+                //TODO warning pop up on html page if id not found
+
             //endregion
 
             default:

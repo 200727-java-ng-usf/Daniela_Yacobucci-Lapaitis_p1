@@ -17,15 +17,27 @@ public class AppDriver {
 
     public static void main(String[] args) {
 
-    String JSONTest = "{ \"username\": \"meghvu\", \"password\": \"clowntime\" }";
 
-        try {
-            Map<String, Object> response = new ObjectMapper().readValue(JSONTest, HashMap.class);
-            String username = response.get("username").toString();
-            System.out.println(username);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        ErsReimbursementService reimbService = new ErsReimbursementService();
+        ErsUserService userService = new ErsUserService();
+
+
+        //System.out.println(userService.findUserById(6));
+
+        System.out.println(reimbService.getReimbursementsByAuthorId(6));
+
+
+
+
+//    String JSONTest = "{ \"username\": \"meghvu\", \"password\": \"clowntime\" }";
+
+//        try {
+//            Map<String, Object> response = new ObjectMapper().readValue(JSONTest, HashMap.class);
+//            String username = response.get("username").toString();
+//            System.out.println(username);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
 
 //        ErsUserService userService = new ErsUserService();
 //
