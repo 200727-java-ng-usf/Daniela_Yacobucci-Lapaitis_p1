@@ -10,6 +10,9 @@ public class ErsReimbursementTypeService {
     private ErsReimbursementTypeRepository ersReimbursementTypeRepository = new ErsReimbursementTypeRepository();
 
     public ErsReimbursementType getErsReimbursementTypeByName(String name){
+
+        System.out.println("name in service: " + name);
+
         return ersReimbursementTypeRepository.getErsReimbursementTypeByName(name).orElseThrow(InvalidRequestException :: new);
     }
 }

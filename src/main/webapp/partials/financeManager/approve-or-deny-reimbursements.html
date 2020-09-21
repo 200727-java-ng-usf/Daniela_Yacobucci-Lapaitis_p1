@@ -4,13 +4,18 @@
     <input type="text" class="form-control" id="reimb-id">
 </div>
 
+
 <div class="form-group">
     <label for="approve-or-deny-reimbursement-dropdown">Role</label>
     <select class="form-control" id="approve-or-deny-reimbursement-dropdown">
-      <option>Approve</option>
-      <option>Deny</option>
+      <option value = "Approve"> Approve</option>
+      <option value = "Deny"> Deny</option>
     </select>
   </div>
+
+  <div id="submit-reimbursement-container">
+    <button type="submit" class="btn btn-primary" id="submit-approve-or-deny-button">Submit</button>
+</div>
 
   <div class="alert alert-success" id="reimbursement-approved-or-denied-successfully-msg"></div>
   <div class="alert alert-danger" id="reimbursement-approved-or-denied-alert"></div>

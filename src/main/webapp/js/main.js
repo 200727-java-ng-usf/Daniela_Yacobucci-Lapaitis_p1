@@ -469,6 +469,7 @@ function configureRegisterView() {
 
 function configureApproveOrDenyReimbursementsView(){
 
+    document.getElementById('submit-approve-or-deny-button').addEventListener('click', approveOrDenyReimbursement);
     document.getElementById('reimbursement-approved-or-denied-successfully-msg').setAttribute('hidden', true);
     document.getElementById('reimbursement-approved-or-denied-alert').setAttribute('hidden', true);
 
@@ -625,7 +626,7 @@ function configureMyReimbursementsView() {
 
 
 
-            document.getElementById('profile').appendChild(table);
+            // document.getElementById('profile').appendChild(table);
 
         }
 
@@ -807,6 +808,9 @@ function configureAllReimbursementsView() {
         }
 
     }
+
+    document.getElementById('go-to-approve-or-deny-reimbursements-button').addEventListener('click', loadApproveOrDenyReimbursementsView);
+    
     
     
 
@@ -970,6 +974,8 @@ function submitReimbursementFunction() {
 
 function approveOrDenyReimbursement(){
 
+    console.log('in approveOrReimbursement()');
+
     let reimbId = document.getElementById('reimb-id');
     let status = document.getElementById('approve-or-deny-reimbursement-dropdown');
 
@@ -980,6 +986,8 @@ function approveOrDenyReimbursement(){
             
     } 
 
+    
+
     if (status=='Deny'){
         reimbIdAndNewStatus.statusObj=='Denied'
     }
@@ -988,6 +996,7 @@ function approveOrDenyReimbursement(){
         reimbIdAndNewStatus.statusObj=='Approved'
     }
 
+    console.log("in request "+reimbIdAndNewStatus.reimbIdObj + " " + reimbIdAndNewStatus.statusObj)
     reimbIdAndNewStatusJSON = JSON.stringify(reimbIdAndNewStatus);
 
     let xhr = new XMLHttpRequest();
@@ -995,7 +1004,7 @@ function approveOrDenyReimbursement(){
    
     xhr.open('PUT', 'reimbursement.updateStatus');
     xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.send(reimbursementJSON);
+    xhr.send(reimbIdAndNewStatus);
 
     xhr.onreadystatechange = function () {
 

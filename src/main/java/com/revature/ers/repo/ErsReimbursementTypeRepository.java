@@ -43,11 +43,13 @@ public class ErsReimbursementTypeRepository {
         }
     }
 
-    public Optional<ErsReimbursementType> getErsReimbursementTypeByName(String ersReimbursementName){
+    public Optional<ErsReimbursementType> getErsReimbursementTypeByName(String ersReimbursementTypeName){
 
         session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
 
         Optional<ErsReimbursementType> _ersReimbursementType = Optional.empty();
+
+        System.out.println("name in getErsReimbursementTypeByName "+ersReimbursementTypeName);
 
         try{
 
@@ -59,13 +61,15 @@ public class ErsReimbursementTypeRepository {
             Root<ErsReimbursementType> root = cq.from(ErsReimbursementType.class);
             cq.select(root);
 
-            cq.where(cb.equal(root.get("reimbTypeName"), ersReimbursementName));
+            cq.where(cb.equal(root.get("reimbTypeName"), ersReimbursementTypeName));
 
             Query query = session.createQuery(cq);
 
-            _ersReimbursementType = (Optional<ErsReimbursementType>) query.getResultList().stream().findFirst();
+            _ersReimbursementType = query.getResultList().stream().findFirst();
 
             tx.commit();
+
+            System.out.println(_ersReimbursementType.get() + " reimb type");
 
         } catch (Exception e) {
             if (tx != null) tx.rollback();

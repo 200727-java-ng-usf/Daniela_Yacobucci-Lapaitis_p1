@@ -21,6 +21,10 @@ public class AppDriver {
         ErsReimbursementService reimbService = new ErsReimbursementService();
         ErsUserService userService = new ErsUserService();
 
+        //reimbService.changeReimbursementStatusByUserId(6, "Pending");
+        reimbService.changeReimbursementStatusByReimbId(6, "Approved");
+        //reimbService.changeReimbursementStatusByUserId(6, "Denied");
+
 
         //System.out.println(userService.findUserById(6));
 

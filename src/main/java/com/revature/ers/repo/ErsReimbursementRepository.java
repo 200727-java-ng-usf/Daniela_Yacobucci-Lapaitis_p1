@@ -1,6 +1,7 @@
 package com.revature.ers.repo;
 
 import com.revature.ers.models.ErsReimbursement;
+import com.revature.ers.models.ErsReimbursementStatus;
 import com.revature.ers.models.ErsReimbursementType;
 import com.revature.ers.models.ErsUser;
 import com.revature.ers.util.HibernateUtils;
@@ -133,7 +134,7 @@ public class ErsReimbursementRepository {
 
     }
 
-    public void changeReimbursementStatusByReimbId (int reimbId, ErsReimbursementType ersReimbursementType){
+    public void changeReimbursementStatusByReimbId (int reimbId, ErsReimbursementStatus ersReimbursementStatus){
 
         session = HibernateUtils.getSessionFactoryProgrammaticConfig().openSession();
 
@@ -144,7 +145,7 @@ public class ErsReimbursementRepository {
             CriteriaUpdate<ErsReimbursement> cu = cb.createCriteriaUpdate(ErsReimbursement.class);
             Root<ErsReimbursement> root = cu.from(ErsReimbursement.class);
 
-            cu.set( "ersReimbursementType", ersReimbursementType).where(cb.equal(root.get("reimbId"), reimbId));
+            cu.set( "ersReimbursementStatus", ersReimbursementStatus).where(cb.equal(root.get("reimbId"), reimbId));
 
             session.createQuery(cu).executeUpdate();
             tx.commit();

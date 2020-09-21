@@ -18,8 +18,7 @@ public class CRUDUpdateRequestHelper {
     public void process(HttpServletRequest req) throws IOException {
 
 
-
-        System.out.println("[CRUDDeleteRequestHelper] req.getRequestURI() " + req.getRequestURI());
+        System.out.println("[CRUDUpdateRequestHelper] req.getRequestURI() " + req.getRequestURI());
         //String ersUserJSON = mapper.readValue(req.getInputStream(), String.class);
         //ErsUser ersUser = ErsUser.JSONtoObj(ersUserJSON);
 
@@ -30,7 +29,7 @@ public class CRUDUpdateRequestHelper {
                 break;
             case "/reimbursement.updateStatus":
             case "/ers/reimbursement.updateStatus":
-                httpDenyReimbursementById(req);
+                httpUpdateReimbursementStatusById(req);
                 break;
 
         }
@@ -49,12 +48,14 @@ public class CRUDUpdateRequestHelper {
 
     }
 
-    public void httpDenyReimbursementById(HttpServletRequest req){
+    public void httpUpdateReimbursementStatusById(HttpServletRequest req){
 
         try {
-            String reimbursementIdJSON = mapper.readValue(req.getInputStream(), String.class);
-            Map<String, Object> response = new ObjectMapper().readValue(reimbursementIdJSON, HashMap.class);
-            String id = response.get("id").toString();
+
+            Map<String, Object> response = mapper.readValue(req.getInputStream(), HashMap.class);
+            int id = Integer.parseInt(response.get("id").toString());
+            String newStatus = response.get("status").toString();
+            ersReimbursementService.changeReimbursementStatusByReimbId(id, newStatus);
 
 
             //ersReimbursementService.setReimbursementStatusToDeniedById(Integer.parseInt(id));
@@ -70,6 +71,12 @@ public class CRUDUpdateRequestHelper {
     }
 
     public void httpApproveReimbursementById(HttpServletRequest req){
+
+
+
+        //ersReimbursementService.changeReimbursementStatusByReimbId();
+
+        ersReimbursementService.changeReimbursementStatusByReimbId(3,"Approved");
 
     }
 

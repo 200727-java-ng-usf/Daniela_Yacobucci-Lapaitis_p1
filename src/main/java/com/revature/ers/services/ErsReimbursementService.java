@@ -4,6 +4,7 @@ import com.revature.ers.exceptions.AuthenticationException;
 import com.revature.ers.exceptions.InvalidRequestException;
 import com.revature.ers.exceptions.NoValuesFoundException;
 import com.revature.ers.models.ErsReimbursement;
+import com.revature.ers.models.ErsReimbursementStatus;
 import com.revature.ers.models.ErsReimbursementType;
 import com.revature.ers.models.ErsUser;
 import com.revature.ers.repo.ErsReimbursementRepository;
@@ -15,6 +16,7 @@ public class ErsReimbursementService {
 
     ErsReimbursementRepository ersReimbursementRepo = new ErsReimbursementRepository();
     ErsUserService ersUserService = new ErsUserService();
+    ErsReimbursementStatusService ersReimbursementStatusService = new ErsReimbursementStatusService();
     ErsReimbursementTypeService ersReimbursementTypeService = new ErsReimbursementTypeService();
 
     public List<ErsReimbursement> getAllReimbursements () {
@@ -36,16 +38,21 @@ public class ErsReimbursementService {
                 .orElseThrow(NoValuesFoundException::new);
     }
 
-    public void changeReimbursementStatusByUserId(int id, String status){
 
-        if(!status.equals("Pending") || !status.equals("Denied") || !status.equals("Approved")){
+    public void changeReimbursementStatusByReimbId(int id, String status){
+
+        System.out.println(status);
+
+        if(!(status.equals("Pending") || status.equals("Denied") || status.equals("Approved"))){
             throw new InvalidRequestException("Invalid request. Status value is invalid.");
         }
 
+        //TODO change to status
+        ErsReimbursementStatus ersReimbursementStatus = ersReimbursementStatusService.getErsReimbursementStatusByName(status);
 
-        ErsReimbursementType ersReimbursementType = ersReimbursementTypeService.getErsReimbursementTypeByName(status);
+        ersReimbursementRepo.changeReimbursementStatusByReimbId(id, ersReimbursementStatus);
 
-        ersReimbursementRepo.changeReimbursementStatusByReimbId(id, ersReimbursementType);
+        //ersReimbursementRepo.changeReimbursementStatusByReimbId(id, ersReimbursementType);
 
     }
 
