@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "ers_reimbursement_statuses", schema = "project_1")
 public class ErsReimbursementStatus {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "reimb_status_id")
     private int reimbStatusId;
 

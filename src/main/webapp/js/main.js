@@ -380,6 +380,28 @@ function loadAllReimbursementsView(){
 
 }
 
+function loadApproveOrDenyReimbursementsView(){
+    console.log('in loadApproveOrDenyReimbursementsView()');
+
+    if(!isUserLoggedIn()){
+        return;
+    }
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'approveOrDenyReimbursements.view');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            APP_VIEW.innerHTML = xhr.responseText;
+            configureApproveOrDenyReimbursementsView();
+
+        }
+
+    }
+}
+
 //#endregion
 
 
@@ -443,6 +465,14 @@ function configureRegisterView() {
     document.getElementById('register').setAttribute('disabled', true);
     document.getElementById('reg-button-container').addEventListener('mouseover', validateRegisterForm);
     document.getElementById('register').addEventListener('click', register);
+}
+
+function configureApproveOrDenyReimbursementsView(){
+
+    document.getElementById('reimbursement-approved-or-denied-successfully-msg').setAttribute('hidden', true);
+    document.getElementById('reimbursement-approved-or-denied-alert').setAttribute('hidden', true);
+
+
 }
 
 //#endregion
@@ -539,18 +569,22 @@ function configureMyReimbursementsView() {
 
     console.log('in configureMyReimbursementsView()');
 
-
     let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'getAllReimbursements.read');
-    xhr.send();
+    let authUser = JSON.parse(localStorage.getItem('authUser'));
+
+    xhr.open('GET', 'getUserReimbursements.read');
+    xhr.send(authUser);
 
     xhr.onreadystatechange = function() {
 
         if (xhr.readyState == 4 && xhr.status == 200) {
 
 
-            let allReimbursementsView =  JSON.parse(xhr.responseText);
+            let JSONResponceText = JSON.parse(xhr.responseText);
+            console.log("responce text " + JSONResponceText);
+            
+            let allReimbursementsView =  JSONResponceText;
 
             let table = document.getElementById("load-my-reimbursements-table");
 
@@ -574,24 +608,24 @@ function configureMyReimbursementsView() {
 
             for (let i = 0; i < allReimbursementsView.length; i++){
 
-                // let row = document.createElement("tr");
-                // row.innerHTML = "<td>" + allReimbursementsView[i].reimbId + "</td>" 
-                //               + "<td>" + allReimbursementsView[i].amount + "</td>"
-                //               + "<td>" + allReimbursementsView[i].submitted + "</td>"
-                //               + "<td>" + allReimbursementsView[i].resolved + "</td>"
-                //               + "<td>" + allReimbursementsView[i].description + "</td>"
-                //               + "<td>" + allReimbursementsView[i].reciept + "</td>"
-                //               + "<td>" + allReimbursementsView[i].authorFirstName  + " " + allReimbursementsView[i].authorLastName + "</td>"
-                //               + "<td>" + allReimbursementsView[i].resolverFirstName + " " + allReimbursementsView[i].resolverLastName + "</td>"
-                //               + "<td>" + allReimbursementsView[i].statusName + "</td>"
-                //               + "<td>" + allReimbursementsView[i].typeName + "</td>";
+                let row = document.createElement("tr");
+                row.innerHTML = "<td>" + allReimbursementsView[i].reimbId + "</td>" 
+                              + "<td>" + allReimbursementsView[i].amount + "</td>"
+                              + "<td>" + allReimbursementsView[i].submitted + "</td>"
+                              + "<td>" + allReimbursementsView[i].resolved + "</td>"
+                              + "<td>" + allReimbursementsView[i].description + "</td>"
+                              + "<td>" + allReimbursementsView[i].reciept + "</td>"
+                              + "<td>" + allReimbursementsView[i].authorFirstName  + " " + allReimbursementsView[i].authorLastName + "</td>"
+                              + "<td>" + allReimbursementsView[i].resolverFirstName + " " + allReimbursementsView[i].resolverLastName + "</td>"
+                              + "<td>" + allReimbursementsView[i].statusName + "</td>"
+                              + "<td>" + allReimbursementsView[i].typeName + "</td>";
 
-                // body.appendChild(row);
+                body.appendChild(row);
             }
 
 
 
-            //document.getElementById('profile').appendChild(table);
+            document.getElementById('profile').appendChild(table);
 
         }
 
@@ -601,7 +635,14 @@ function configureMyReimbursementsView() {
 
 function configureSubmitReimbursementView() {
 
-    console.log('in configureSubmitReimbursementView()')
+    console.log('in configureSubmitReimbursementView()');
+
+    document.getElementById('submit-reimbursement-alert').setAttribute('hidden', true);
+
+    document.getElementById('submit-reimbursement-button').setAttribute('disabled', true);
+    document.getElementById('submit-reimbursement-container').addEventListener('mouseover', validateSubmitReimbursementForm);
+    document.getElementById('submit-reimbursement-button').addEventListener('click', submitReimbursementFunction);
+
 }
 
 
@@ -772,13 +813,10 @@ function configureAllReimbursementsView() {
 }
 
 
-
 //#endregion
 
 
-
 //#region operations
-//------------------OPERATIONS-----------------------
 
 function login() {
 
@@ -842,7 +880,7 @@ function register() {
 
     let xhr = new XMLHttpRequest();
 
-    xhr.open('POST', 'users');
+    xhr.open('POST', 'user.create');
     xhr.send(newUserJSON);
 
     xhr.onreadystatechange = function () {
@@ -875,6 +913,135 @@ function logout() {
         }
     }
 }
+
+function submitReimbursementFunction() {
+
+    console.log('in submitReimbursement()');
+
+    let amount = document.getElementById('amount').value;
+    let description = document.getElementById('description').value;
+    let reimbursementType = document.getElementById('select-reimbursement-type').value;
+    let authorUsername = JSON.parse(localStorage.getItem('authUser')).username; 
+
+    let reimbursement = {
+        amount: amount,
+        description: description,
+        statusName: reimbursementType,
+        authorUsername: authorUsername
+    }
+
+    if(amount && description && reimbursementType && authorUsername){
+
+        console.log("reimb info " + reimbursement.amount + reimbursement.description + reimbursement.typeName + reimbursement.authorUsername);
+
+        let reimbursementJSON = JSON.stringify(reimbursement);
+    
+        console.log("reimbJSON "+ reimbursementJSON);
+
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('POST', 'reimbursement.create');
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(reimbursementJSON);
+
+    xhr.onreadystatechange = function () {
+
+        // if (xhr.readyState == 4 && xhr.status == 201) {
+
+        //     document.getElementById('login-message').setAttribute('hidden', true);
+        //     localStorage.setItem('authUser', xhr.responseText);
+        //     loadLoggedInFullHome();
+
+        // } else if (xhr.readyState == 4 && xhr.status == 401) {
+
+        //     document.getElementById('login-message').removeAttribute('hidden');
+        //     let err = JSON.parse(xhr.responseText);
+        //     document.getElementById('login-message').innerText = err.message;
+
+        // }
+
+    }
+
+    }
+
+
+}
+
+function approveOrDenyReimbursement(){
+
+    let reimbId = document.getElementById('reimb-id');
+    let status = document.getElementById('approve-or-deny-reimbursement-dropdown');
+
+
+    let reimbIdAndNewStatus = {
+            reimbIdObj: reimbId,
+            statusObj: 'Pending'
+            
+    } 
+
+    if (status=='Deny'){
+        reimbIdAndNewStatus.statusObj=='Denied'
+    }
+
+    if (status=='Approve'){
+        reimbIdAndNewStatus.statusObj=='Approved'
+    }
+
+    reimbIdAndNewStatusJSON = JSON.stringify(reimbIdAndNewStatus);
+
+    let xhr = new XMLHttpRequest();
+
+   
+    xhr.open('PUT', 'reimbursement.updateStatus');
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(reimbursementJSON);
+
+    xhr.onreadystatechange = function () {
+
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+            
+
+        } else if (xhr.readyState == 4 && xhr.status == 401) {
+
+            document.getElementById('login-message').removeAttribute('hidden');
+            let err = JSON.parse(xhr.responseText);
+            document.getElementById('login-message').innerText = err.message;
+
+        }
+
+    }
+    
+}
+
+
+function getUserInfo() {
+
+    console.log('in getUserInfo()');
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'userinfo.database');
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+            let userInfoView =  JSON.parse(xhr.responseText);
+            console.log("userInfoView: " + userInfoView);
+            return userInfoView;
+        }
+
+    }
+
+    return 'empty';
+}
+
+
+//#endregion
+
+//#region availability checks
 
 function isUsernameAvailable() {
 
@@ -933,27 +1100,6 @@ function isEmailAvailable() {
     }
 }
 
-function getUserInfo() {
-
-    console.log('in getUserInfo()');
-
-    let xhr = new XMLHttpRequest();
-
-    xhr.open('GET', 'userinfo.database');
-    xhr.send();
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-
-            let userInfoView =  JSON.parse(xhr.responseText);
-            console.log("userInfoView: " + userInfoView);
-            return userInfoView;
-        }
-
-    }
-
-    return 'empty';
-}
 
 
 function isUserLoggedIn(){
@@ -1006,11 +1152,31 @@ function validateRegisterForm() {
 
     if (!fn || !ln || !email || !un || !pw) {
         document.getElementById('reg-message').removeAttribute('hidden');
-        document.getElementById('reg-message').innerText = 'You must provided values for all fields in the form!'
+        document.getElementById('reg-message').innerText = 'You must provide values for all fields in the form!'
         document.getElementById('register').setAttribute('disabled', true);
     } else {
         document.getElementById('register').removeAttribute('disabled');
         document.getElementById('reg-message').setAttribute('hidden', true);
+    }
+}
+
+function validateSubmitReimbursementForm() {
+
+    console.log('in validateSubmitReimbursementForm()');
+
+    let amount = document.getElementById('amount').value;
+    let description = document.getElementById('description').value;
+    let reimbursementType = document.getElementById('select-reimbursement-type').value;
+
+    console.log("them values "+ amount + description + reimbursementType);
+
+    if (!amount || !description || !reimbursementType) {
+        document.getElementById('submit-reimbursement-alert').removeAttribute('hidden');
+        document.getElementById('submit-reimbursement-alert').innerText = 'You must provide values for all fields in the form!'
+        document.getElementById('submit-reimbursement-button').setAttribute('disabled', true);
+    } else {
+        document.getElementById('submit-reimbursement-button').removeAttribute('disabled');
+        document.getElementById('submit-reimbursement-alert').setAttribute('hidden', true);
     }
 }
 

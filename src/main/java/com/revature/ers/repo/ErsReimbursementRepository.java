@@ -52,7 +52,9 @@ public class ErsReimbursementRepository {
         try {
 
             Transaction tx = session.beginTransaction();
+            System.out.println("here?");
             session.save(ersReimbursement);
+            System.out.println("here??");
             tx.commit();
 
         } catch (Exception e) {

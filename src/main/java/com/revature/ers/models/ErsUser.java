@@ -11,7 +11,7 @@ import javax.persistence.*;
 //TODO add schema on application.properties and reference it on all tables
 public class ErsUser {
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="ers_user_id")
     private int ersUserId;
 

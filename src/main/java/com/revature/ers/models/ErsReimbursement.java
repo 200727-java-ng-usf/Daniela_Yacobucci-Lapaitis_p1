@@ -13,7 +13,7 @@ import java.util.Objects;
 public class ErsReimbursement {
 
 
-    @Id @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="reimb_id")
     private int reimbId;
 
@@ -23,10 +23,10 @@ public class ErsReimbursement {
     // TODO change to have timezone?
 
     @Column(name = "submitted")
-    private LocalTime submitted;
+    private long submitted;
 
     @Column(name = "resolved")
-    private LocalTime resolved;
+    private long resolved;
 
     @Column(name = "description")
     private String description;
@@ -67,8 +67,17 @@ public class ErsReimbursement {
         this.ersReimbursementType = ersReimbursementType;
     }
 
+    //HAS amount, submited, description, author, type
+    public ErsReimbursement(double amount, long submitted, String description, ErsUser author, ErsReimbursementType ersReimbursementType) {
+        this.amount = amount;
+        this.submitted = submitted;
+        this.description = description;
+        this.author = author;
+        this.ersReimbursementType = ersReimbursementType;
+    }
+
     //no id, no resolved, no receipt, no resolver
-    public ErsReimbursement(double amount, LocalTime submitted, String description, ErsUser author, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
+    public ErsReimbursement(double amount, long submitted, String description, ErsUser author, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
         this.amount = amount;
         this.submitted = submitted;
         this.description = description;
@@ -78,7 +87,7 @@ public class ErsReimbursement {
     }
 
     //no id
-    public ErsReimbursement(double amount, LocalTime submitted, LocalTime resolved, String description, String receipt, ErsUser author, ErsUser resolver, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
+    public ErsReimbursement(double amount, long submitted, long resolved, String description, String receipt, ErsUser author, ErsUser resolver, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
         this.amount = amount;
         this.submitted = submitted;
         this.resolved = resolved;
@@ -91,7 +100,7 @@ public class ErsReimbursement {
     }
 
     //all
-    public ErsReimbursement(int reimbId, double amount, LocalTime submitted, LocalTime resolved, String description, String receipt, ErsUser author, ErsUser resolver, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
+    public ErsReimbursement(int reimbId, double amount, long submitted, long resolved, String description, String receipt, ErsUser author, ErsUser resolver, ErsReimbursementStatus ersReimbursementStatus, ErsReimbursementType ersReimbursementType) {
         this.reimbId = reimbId;
         this.amount = amount;
         this.submitted = submitted;
@@ -120,19 +129,19 @@ public class ErsReimbursement {
         this.amount = amount;
     }
 
-    public LocalTime getSubmitted() {
+    public long getSubmitted() {
         return submitted;
     }
 
-    public void setSubmitted(LocalTime submitted) {
+    public void setSubmitted(long submitted) {
         this.submitted = submitted;
     }
 
-    public LocalTime getResolved() {
+    public long getResolved() {
         return resolved;
     }
 
-    public void setResolved(LocalTime resolved) {
+    public void setResolved(long resolved) {
         this.resolved = resolved;
     }
 

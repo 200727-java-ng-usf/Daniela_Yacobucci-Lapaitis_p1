@@ -24,7 +24,7 @@ public class AppDriver {
 
         //System.out.println(userService.findUserById(6));
 
-        System.out.println(reimbService.getReimbursementsByAuthorId(6));
+        //System.out.println(reimbService.getReimbursementsByAuthorUsername(""));
 
 
 

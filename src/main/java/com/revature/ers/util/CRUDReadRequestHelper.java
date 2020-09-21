@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CRUDReadRequestHelper {
 
@@ -44,6 +46,10 @@ public class CRUDReadRequestHelper {
             case "/getAllReimbursements.read":
             case "/ers/getAllReimbursements.read":
                 response = httpGetAllReimbursements();
+                break;
+            case "/getUserReimbursements.read":
+            case "/ers/getUserReimbursements.read":
+                response = httpGetAllReimbursementsOfUser(req);
                 break;
 
         }
@@ -108,7 +114,6 @@ public class CRUDReadRequestHelper {
             List<ErsReimbursementView> allReimbursementViews = new ArrayList<ErsReimbursementView>();
 
             for(ErsReimbursement ersr: allReimbursements){
-                System.out.println("there is at least one");
                 ErsReimbursementView ersReimbursementView = new ErsReimbursementView(ersr);
                 allReimbursementViews.add(ersReimbursementView);
 
@@ -122,6 +127,66 @@ public class CRUDReadRequestHelper {
         }
 
         return allReimbursemenstJSON;
+    }
+
+    public String httpGetAllReimbursementsOfUser(HttpServletRequest req){
+
+        String allReimbursementsOfUserJSON = "";
+        Map<String, Object> response;
+        Principal principalObj = new Principal();
+
+        String principal = (String) req.getSession().getAttribute("principal");
+
+        System.out.println("principal: " + principal);
+
+        try {
+            principalObj = new ObjectMapper().readValue(principal, Principal.class);
+        } catch (JsonProcessingException e) {
+
+            System.out.println("here is the catch: ");
+            e.printStackTrace();
+        }
+
+//            String username = response.get("username").toString();
+//            System.out.println(username);
+
+        try {
+            List<ErsReimbursement> allReimbursementsOfUser = ersReimbursementService.getReimbursementsByAuthorUsername(principalObj.getUsername());
+
+
+            System.out.println("all reimb");
+
+            for(ErsReimbursement ersrv:allReimbursementsOfUser){
+                System.out.println(ersrv);
+            }
+
+            List<ErsReimbursementView> allReimbursementViews = new ArrayList<ErsReimbursementView>();
+
+            for(ErsReimbursement ersr: allReimbursementsOfUser){
+                System.out.println("yes?");
+                ErsReimbursementView ersReimbursementView = new ErsReimbursementView(ersr);
+                System.out.println("no?");
+                allReimbursementViews.add(ersReimbursementView);
+                System.out.println("perhaps?");
+
+            }
+
+            //TODO remove
+            System.out.println("all views");
+
+            for(ErsReimbursementView ersrv:allReimbursementViews){
+                System.out.println(ersrv);
+            }
+
+
+            allReimbursementsOfUserJSON = mapper.writeValueAsString(allReimbursementViews);
+
+
+        } catch (JsonProcessingException jpe) {
+            jpe.printStackTrace();
+        }
+
+        return allReimbursementsOfUserJSON;
     }
 
 }

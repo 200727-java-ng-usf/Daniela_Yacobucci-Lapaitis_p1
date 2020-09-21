@@ -17,9 +17,9 @@ public class ErsReimbursementView {
 
     private double amount;
 
-    private LocalTime submitted;
+    private long submitted;
 
-    private LocalTime resolved;
+    private long resolved;
 
     private String description;
 
@@ -72,7 +72,11 @@ public class ErsReimbursementView {
         }
 
         this.description = ersReimbursement.getDescription();
-        this.statusName = ersReimbursement.getErsReimbursementStatus().getReimbStatus();
+
+        if(ersReimbursement.getErsReimbursementStatus()!=null){
+            this.statusName = ersReimbursement.getErsReimbursementStatus().getReimbStatus();
+        }
+
         this.typeName = ersReimbursement.getErsReimbursementType().getReimbTypeName();
 
         if(ersReimbursement.getReceipt()!=null){
@@ -81,7 +85,7 @@ public class ErsReimbursementView {
 
         this.reimbId = ersReimbursement.getReimbId();
 
-        if(ersReimbursement.getResolved()!=null){
+        if(ersReimbursement.getResolved()!=0){
             this.resolved = ersReimbursement.getResolved();
         }
 
@@ -105,19 +109,19 @@ public class ErsReimbursementView {
         this.amount = amount;
     }
 
-    public LocalTime getSubmitted() {
+    public long getSubmitted() {
         return submitted;
     }
 
-    public void setSubmitted(LocalTime submitted) {
+    public void setSubmitted(long submitted) {
         this.submitted = submitted;
     }
 
-    public LocalTime getResolved() {
+    public long getResolved() {
         return resolved;
     }
 
-    public void setResolved(LocalTime resolved) {
+    public void setResolved(long resolved) {
         this.resolved = resolved;
     }
 
